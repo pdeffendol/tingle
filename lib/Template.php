@@ -12,6 +12,7 @@ class Tingle_Template
 	{
 		if (is_string($name_or_container))
 		{
+			// Don't allow overwriting of configuration settings
 			if ($name_or_container != '_config')
 			{
 				$this->$name_or_container = $value;
@@ -41,7 +42,11 @@ class Tingle_Template
 	public function get_assignments()
 	{
 		$all = (array)get_object_vars($this);
+		
+		// Because we called get_object_vars inside the class, it returns
+		// protected and private attributes.
 		unset($all['_config']);
+		
 		return $all;
 	}
 }
