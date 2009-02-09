@@ -1,0 +1,1 @@
+something: [<?php echo $data; ?>] empty: [<?php echo $_config; ?>]

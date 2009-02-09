@@ -5,7 +5,8 @@ class Tingle_Template
 {
 	protected $_config = array(
 		'template_path' => array('.'),
-		'template'      => null
+		'template'      => null,
+		'extract_vars'  => false
 		);
 
 	
@@ -135,6 +136,21 @@ class Tingle_Template
 
 
 	/**
+	 * Set whether to extract template variables to locals.
+	 *
+	 * If this is turned on, template files can access assigned
+	 * variables without using $this.  Beware, this can cause
+	 * confusion and/or conflicts if you are using local variables
+	 * inside your template file.
+	 *
+	 * @param boolean $flag True to turn on extraction
+	 */
+	public function set_extract_vars($flag = true)
+	{
+		$this->_config['extract_vars'] = (bool)$flag;
+	}
+
+	/**
 	 * Template rendering
 	 */
 
@@ -162,7 +178,13 @@ class Tingle_Template
 	{
 		if ($this->_config['template'])
 		{
-			return $this->fetch();
+			try {
+				return $this->render();
+			}
+			catch (Tingle_Exception $e)
+			{
+				return '';
+			}
 		}
 		
 		return '';
@@ -175,9 +197,9 @@ class Tingle_Template
 	 *
 	 * @param string $template Path to template file
 	 */
-	public function render($template = null)
+	public function display($template = null)
 	{
-		echo $this->fetch($template);
+		echo $this->render($template);
 	}
 	
 	
@@ -189,7 +211,7 @@ class Tingle_Template
 	 * @param string $template Path to template file
 	 * @return string Results of processing template
 	 */
-	public function fetch($template = null)
+	public function render($template = null)
 	{
 		if ($template === null)
 		{
@@ -201,10 +223,37 @@ class Tingle_Template
 			throw new Tingle_TemplateNotFoundException('Template '.$template.' not found');
 		}
 		
+		// "Hide" local variables in case we're using extraction
+		$this->_config['saved_template'] = $template;
+		$this->_config['saved_template_path'] = $template_path;
+		unset($template);
+		unset($template_path);
+		
+		if ($this->_config['extract_vars'])
+		{
+			extract($this->get_assignments(), EXTR_REFS);
+		}
+		
 		// Capture template output
-		ob_start();
-		include($template_path);
-		return ob_get_clean();
+		try 
+		{
+			ob_start();
+			include($this->_config['saved_template_path']);
+			$result = ob_get_contents();
+			ob_end_clean();
+		}
+		catch (Exception $e)
+		{
+			// Clear the buffer so no output escapes (especially important
+			// when dealing with nested templates)
+			ob_end_clean();
+			throw $e;
+		}
+		
+		unset($this->_config['saved_template']);
+		unset($this->_config['saved_template_path']);
+
+		return $result;
 	}
 
 	
