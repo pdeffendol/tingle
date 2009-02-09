@@ -41,6 +41,12 @@ class SimpleTemplateTest extends PHPUnit_Framework_TestCase
 		$this->tpl->fetch('../basic.tpl');
 	}
 	
+	public function test_should_set_default_template_path_to_current_dir()
+	{
+		$this->tpl->set_template_path(null);
+		$this->assertEquals('Hello', $this->tpl->fetch('templates/basic.tpl'));
+	}
+	
 	public function test_should_allow_setting_template_before_fetch()
 	{
 		$this->tpl->set_template('basic.tpl');

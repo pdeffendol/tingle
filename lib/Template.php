@@ -11,7 +11,7 @@ class Tingle_Template
 	
 	public function __construct($config = null)
 	{
-
+		# code...
 	}
 
 	
@@ -106,9 +106,8 @@ class Tingle_Template
 	 */
 	public function add_template_path($path)
 	{
-		$this->_config['template_path'][] = $path;
+		$this->_config['template_path'] = array_merge($this->_config['template_path'] , (array)$path);
 	}
-
 	
 	/**
 	 * Set the template search path, overwriting any previous settings.
@@ -117,8 +116,23 @@ class Tingle_Template
 	 */
 	public function set_template_path($path)
 	{
-		$this->_config['template_path'] = (array)$path;
+		$this->_config['template_path'] = array();
+		$this->add_template_path('.');
+		
+		$this->add_template_path($path);
 	}
+	
+	
+	/**
+	 * Retrieve template search paths.
+	 * 
+	 * @return array Search paths
+	 */
+	public function get_template_path()
+	{
+		return $this->_config['template_path'];
+	}
+
 
 	/**
 	 * Template rendering
@@ -182,7 +196,7 @@ class Tingle_Template
 			$template = $this->_config['template'];
 		}
 		
-		if (false === ($template_path = $this->get_template_path($template)))
+		if (false === ($template_path = $this->find_template($template)))
 		{
 			throw new Tingle_TemplateNotFoundException('Template '.$template.' not found');
 		}
@@ -201,7 +215,7 @@ class Tingle_Template
 	 * @param  string Name of desired template file
 	 * @return mixed Full path to template, or false if not found
 	 */
-	private function get_template_path($template)
+	private function find_template($template)
 	{
 		$paths = (array)$this->_config['template_path'];
 		
