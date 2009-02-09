@@ -1,0 +1,14 @@
+= Tingle
+
+Tingle is a lightweight PHP template system that avoids the need for a separate template language (like Smarty.)  It will support add-on functionality as "helpers" and the ability to use a layout template for consistent and DRY code.
+
+== Requirements
+
+ * PHP 5.2 (?)
+ 
+== Basic Usage
+
+== Helpers
+
+== Layouts
+
