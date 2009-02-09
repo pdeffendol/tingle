@@ -5,6 +5,7 @@ Tingle is a lightweight PHP template system that avoids the need for a separate 
 == Requirements
 
  * PHP 5.2 (?)
+ * PHPUnit to run test suite
  
 == Basic Usage
 

@@ -1,0 +1,1 @@
+<?php echo $this->data; ?>, this template is in a folder.
