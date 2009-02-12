@@ -43,6 +43,19 @@ class Tingle_Template
 				$this->_config['helpers'][$helper] = $name;
 			}
 		}
+		
+		return true;
+	}
+	
+	
+	/**
+	 * Get a list of registered helper methods.
+	 *
+	 * @return array List of helper methods
+	 */
+	public function get_registered_helpers()
+	{
+		return array_keys($this->_config['helpers']);
 	}
 	
 	
