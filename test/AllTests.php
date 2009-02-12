@@ -12,6 +12,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once dirname(__FILE__).'/AssignmentTest.php';
 require_once dirname(__FILE__).'/SimpleTemplateTest.php';
 require_once dirname(__FILE__).'/NestedTemplateTest.php';
+require_once dirname(__FILE__).'/HelperTest.php';
 
 class AllTests
 {
@@ -27,6 +28,7 @@ class AllTests
 		$suite->addTestSuite('AssignmentTest');
 		$suite->addTestSuite('SimpleTemplateTest');
 		$suite->addTestSuite('NestedTemplateTest');
+		$suite->addTestSuite('HelperTest');
  
 		return $suite;
 	}

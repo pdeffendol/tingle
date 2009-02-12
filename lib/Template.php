@@ -34,6 +34,11 @@ class Tingle_Template
 	 */
 	public function register_helper($name)
 	{
+		if (!class_exists($name) || !is_subclass_of($name, 'Tingle_Helper'))
+		{
+			throw new Tingle_InvalidHelperClass;
+		}
+		
 		$helpers = get_class_methods($name);
 		
 		foreach ($helpers as $helper)
@@ -73,7 +78,7 @@ class Tingle_Template
 		
 		if (!$helper_class)
 		{
-			throw new Tingle_HelperNotFound($name);
+			throw new Tingle_HelperMethodNotDefined($name);
 		}
 		
 		if (!$this->_config['active_helpers'][$helper_class])
