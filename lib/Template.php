@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__).'/Exception.php';
+require_once dirname(__FILE__).'/helpers/Capture.php';
 
 class Tingle_Template
 {
@@ -17,6 +18,7 @@ class Tingle_Template
 		$this->_config = array_merge($this->_config, (array)$config);
 		
 		// Register bundled helpers
+		$this->register_helper('Tingle_Helper_Capture');
 	}
 	
 	

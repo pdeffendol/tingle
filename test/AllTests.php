@@ -13,6 +13,8 @@ require_once dirname(__FILE__).'/AssignmentTest.php';
 require_once dirname(__FILE__).'/SimpleTemplateTest.php';
 require_once dirname(__FILE__).'/NestedTemplateTest.php';
 require_once dirname(__FILE__).'/HelperTest.php';
+require_once dirname(__FILE__).'/CaptureHelperTest.php';
+require_once dirname(__FILE__).'/CaptureHelperContentTest.php';
 
 class AllTests
 {
@@ -29,6 +31,8 @@ class AllTests
 		$suite->addTestSuite('SimpleTemplateTest');
 		$suite->addTestSuite('NestedTemplateTest');
 		$suite->addTestSuite('HelperTest');
+		$suite->addTestSuite('CaptureHelperTest');
+		$suite->addTestSuite('CaptureHelperContentTest');
  
 		return $suite;
 	}
