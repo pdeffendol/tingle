@@ -4,17 +4,86 @@ require_once dirname(__FILE__).'/Exception.php';
 class Tingle_Template
 {
 	protected $_config = array(
-		'template_path' => array('.'),
-		'template'      => null,
-		'extract_vars'  => false
+		'template_path'  => array('.'),
+		'template'       => null,
+		'extract_vars'   => false,
+		'helpers' => array(),
+		'active_helpers'        => array()
 		);
 
 	
 	public function __construct($config = null)
 	{
-		# code...
+		$this->_config = array_merge($this->_config, (array)$config);
+		
+		// Register bundled helpers
 	}
-
+	
+	
+	/**
+	 * Register a helper class.
+	 *
+	 * A helper class must be a subclass of Tingle_Helper.  The public methods
+	 * of the class will be registered as helper methods.
+	 *
+	 * Calling a registered helper method:
+	 *
+	 * $this->helper_method_name($arg1, $arg2);
+	 *
+	 * In the example above, $this is the Tingle_Template object.
+	 */
+	public function register_helper($name)
+	{
+		$helpers = get_class_methods($name);
+		
+		foreach ($helpers as $helper)
+		{
+			if ($helper != '__construct')
+			{
+				$this->_config['helpers'][$helper] = $name;
+			}
+		}
+	}
+	
+	
+	/**
+	 * Handle calls to helper methods by delegating to the appropriate
+	 * helper class.
+	 *
+	 * @param string $helper Name of helper method
+	 * @param array  $args   Arguments to helper method
+	 * @return string Result of helper method
+	 */
+	public function __call($helper, $args)
+	{
+		$helper_class = $this->_config['helpers'][$helper];
+		
+		if (!$helper_class)
+		{
+			throw new Tingle_HelperNotFound($name);
+		}
+		
+		if (!$this->_config['active_helpers'][$helper_class])
+		{
+			$this->_config['active_helpers'][$helper_class] = new $helper_class($this);
+		}
+		$helper_class =& $this->_config['active_helpers'][$helper_class];
+		
+		switch (count($args)) 
+		{
+			case 0:
+				return $helper_class->$helper();
+		
+			case 1:
+				return $helper_class->$helper($args[0]);
+			case 2:
+				return $helper_class->$helper($args[0], $args[1]);
+			case 3:
+				return $helper_class->$helper($args[0], $args[1], $args[2]);
+			default:
+				return call_user_func_array(array($helper_class, $helper), $args);
+		}	
+	}
 	
 	/**
 	 * Assign variables to the template.
