@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__).'/Exception.php';
-require_once dirname(__FILE__).'/helpers/Capture.php';
 
 class Tingle_Template
 {
@@ -8,8 +7,8 @@ class Tingle_Template
 		'template_path'  => array('.'),
 		'template'       => null,
 		'extract_vars'   => false,
-		'helpers' => array(),
-		'active_helpers'        => array()
+		'helpers'        => array(),
+		'active_helpers' => array()
 		);
 
 	
@@ -17,8 +16,19 @@ class Tingle_Template
 	{
 		$this->_config = array_merge($this->_config, (array)$config);
 		
-		// Register bundled helpers
-		$this->register_helper('Tingle_Helper_Capture');
+		$this->register_bundled_helpers();
+	}
+	
+	
+	private function register_bundled_helpers()
+	{
+		$helpers = array('Capture');
+		
+		foreach ($helpers as $helper)
+		{
+			include_once dirname(__FILE__)."/helpers/$helper.php";
+			$this->register_helper('Tingle_Helper_'.$helper);
+		}
 	}
 	
 	
