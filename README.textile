@@ -7,9 +7,14 @@ h3. Requirements
 * PHP 5.2 (?)
 * PHPUnit to run test suite
 
-h3. Basic Usage
+h3. Features
 
-h3. Helpers
+Unlike some other PHP template libraries that introduce a secondary template "language," Tingle uses plain PHP in its templates.  It is up to the developer to ensure separation between business logic and presentation.
 
-h3. Layouts
+h4. Helper Classes
 
+Tingle's helper classes provide groups of methods that aid in producing your application's view layer.  These are usually data formatting routines or macros that reduce repetition in your templates. Each helper class defines one or more methods that may be called from your template.
+
+h4. Layouts
+
+Layouts are templates that provide a common structure to your rendered views.  Typically you will use layouts to define the basic structure of your page.  The content of your view template will be inserted into the layout at the point(s) you specify.  This avoids the problem presented by other templating systems in which you must split your layouts into a "header" template and a "footer" template, and remember to include them in each of your views.
