@@ -1,1 +1,0 @@
-Bad nesting: <?php echo $this->render('bad_template.tpl'); ?>

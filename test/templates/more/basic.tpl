@@ -1,1 +1,1 @@
-<?php echo $this->data; ?>, this template is in a folder.
+This template is in a folder.

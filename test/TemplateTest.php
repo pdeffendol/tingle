@@ -2,13 +2,23 @@
 require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__).'/../lib/Template.php';
 
-class SimpleTemplateTest extends PHPUnit_Framework_TestCase
+class TemplateTest extends PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
 		$this->tpl = new Tingle_Template;
 		$this->tpl->set_template_path(dirname(__FILE__).'/templates');
 		$this->tpl->data = 'Hello';
+	}
+	
+	public function test_should_locate_template()
+	{
+		$this->assertEquals(realpath(dirname(__FILE__).'/templates/basic.tpl'), $this->tpl->template('basic.tpl'));
+	}
+	
+	public function test_should_not_locate_missing_template()
+	{
+		$this->assertFalse($this->tpl->template('bad_template.tpl'));
 	}
 	
 	public function test_should_fail_on_missing_templates()
@@ -18,33 +28,34 @@ class SimpleTemplateTest extends PHPUnit_Framework_TestCase
 		$result = $this->tpl->render('bad_template.tpl');
 	}
 	
-	public function test_should_render_template()
+	public function test_should_locate_templates_in_folders()
 	{
-		$this->assertEquals('Data: Hello', $this->tpl->render('basic.tpl'));
+		$this->assertEquals(realpath(dirname(__FILE__).'/templates/more/basic.tpl'), $this->tpl->template('more/basic.tpl'));
 	}
-	
-	public function test_should_render_templates_in_folders()
-	{
-		$this->assertEquals('Hello, this template is in a folder.', $this->tpl->render('more/basic.tpl'));
-	}
-	
+
 	public function test_should_not_allow_templates_outside_path()
 	{
-		$this->setExpectedException('Tingle_TemplateNotFoundException');
-
 		$this->tpl->set_template_path('templates/more');
 		
 		// Make sure template is readable by other means
-		$this->assertTrue(file_exists('templates/more/../basic.tpl'));
+		$this->assertTrue(file_exists(dirname(__FILE__).'/templates/more/../basic.tpl'));
 		
 		// Tingle should not allow this template to be rendered
-		$result = $this->tpl->render('../basic.tpl');
+		$this->assertFalse($this->tpl->template('../basic.tpl'));
 	}
 	
 	public function test_should_set_default_template_path_to_current_dir()
 	{
+		$oldcwd = getcwd();
+		chdir(dirname(__FILE__));
 		$this->tpl->set_template_path(null);
-		$this->assertEquals('Data: Hello', $this->tpl->render('templates/basic.tpl'));
+		$this->assertEquals(dirname(__FILE__).'/templates/basic.tpl', $this->tpl->template('templates/basic.tpl'));
+		chdir($oldcwd);
+	}
+	
+	public function test_should_render_template()
+	{
+		$this->assertEquals('Data: Hello', $this->tpl->render('basic.tpl'));
 	}
 	
 	public function test_should_allow_setting_template_before_render()

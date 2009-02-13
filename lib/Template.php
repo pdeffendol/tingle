@@ -255,7 +255,7 @@ class Tingle_Template
 
 	
 	/**
-	 * Indicate template file to process when calling ::fetch() and ::render() without
+	 * Indicate template file to process when calling ::display() and ::render() without
 	 * parameters.
 	 *
 	 * @param string $template Path to template file
@@ -317,7 +317,7 @@ class Tingle_Template
 			$template = $this->_config['template'];
 		}
 		
-		if (false === ($template_path = $this->find_template($template)))
+		if (false === ($template_path = $this->template($template)))
 		{
 			throw new Tingle_TemplateNotFoundException('Template '.$template.' not found');
 		}
@@ -357,13 +357,18 @@ class Tingle_Template
 
 	
 	/**
-	 * 	Attempt to locate the specified template in the template
+	 * Attempt to locate the specified template in the template
 	 * path and return its full path.
+	 *
+	 * This can be used along with the PHP include statement to
+	 * insert sub-templates.
+	 *
+	 * <?php include $this->template('header.tpl'); ?>
 	 *
 	 * @param  string Name of desired template file
 	 * @return mixed Full path to template, or false if not found
 	 */
-	private function find_template($template)
+	public function template($template)
 	{
 		$paths = (array)$this->_config['template_path'];
 		
