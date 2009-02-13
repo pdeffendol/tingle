@@ -11,6 +11,10 @@ h3. Features
 
 Unlike some other PHP template libraries that introduce a secondary template "language," Tingle uses plain PHP in its templates.  It is up to the developer to ensure separation between business logic and presentation.
 
+h4. Low Overhead
+
+Frameworks like the Zend Framework offer similar template systems, but make it difficult to use only the template portion of the framework without including loads of other classes.  Tingle is focused on a single task - rendering templates - and can be used by itself or incorporated into your PHP application framework.
+
 h4. Helper Classes
 
 Tingle's helper classes provide groups of methods that aid in producing your application's view layer.  These are usually data formatting routines or macros that reduce repetition in your templates. Each helper class defines one or more methods that may be called from your template.
