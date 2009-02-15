@@ -6,6 +6,7 @@ class Tingle_Template
 	protected $_config = array(
 		'template_path'  => array('.'),
 		'template'       => null,
+		'layout'         => null,
 		'extract_vars'   => false,
 		'helpers'        => array(),
 		'active_helpers' => array()
@@ -20,6 +21,9 @@ class Tingle_Template
 	}
 	
 	
+	/**
+	 * Register the helper classes that are bundled with Tingle.
+	 */
 	private function register_bundled_helpers()
 	{
 		$helpers = array('Capture');
@@ -265,6 +269,16 @@ class Tingle_Template
 		$this->_config['template'] = $template;
 	}
 
+
+  /**
+	 * Indicate a layout file to process when calling ::display() and ::render().
+	 *
+	 * @param string $template Path to layout template file
+	 */
+	public function set_layout($template)
+	{
+		$this->_config['layout'] = $template;
+	}
 	
 	/**
 	 * Convert a Template object to a string by obtaining the rendered template.
@@ -303,7 +317,8 @@ class Tingle_Template
 	
 	
 	/**
-	 * Process a template file and return the results as a string.  If a template 
+	 * Process a template file and return the results as a string.  If a layout
+	 * has been set, insert the template resulst into the rendered layout. If a template 
 	 * filename is not provided, then use the filename already provided by 
 	 * ::set_template()
 	 *
@@ -311,6 +326,32 @@ class Tingle_Template
 	 * @return string Results of processing template
 	 */
 	public function render($template = null)
+	{
+		// Render template first
+		$result = $this->render_without_layout($template);
+			
+		// Render layout if necessary
+		if ($this->_config['layout'])
+		{
+			$this->content_for('layout')->set($result);
+			return $this->render_without_layout($this->_config['layout']);
+		}
+		else
+		{
+			return $result;
+		}
+	}
+	
+	
+	/**
+	 * Process a template file and return the results as a string.  If a template 
+	 * filename is not provided, then use the filename already provided by 
+	 * ::set_template()
+	 *
+	 * @param string $template Path to template file
+	 * @return string Results of processing template
+	 */
+	private function render_without_layout($template = null)
 	{
 		if ($template === null)
 		{
@@ -323,7 +364,6 @@ class Tingle_Template
 		}
 		
 		// "Hide" local variables in case we're using extraction
-		$this->_config['saved_template'] = $template;
 		$this->_config['saved_template_path'] = $template_path;
 		unset($template);
 		unset($template_path);
@@ -349,12 +389,10 @@ class Tingle_Template
 			throw $e;
 		}
 		
-		unset($this->_config['saved_template']);
 		unset($this->_config['saved_template_path']);
-
+		
 		return $result;
 	}
-
 	
 	/**
 	 * Attempt to locate the specified template in the template

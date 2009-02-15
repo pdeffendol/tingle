@@ -11,6 +11,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 // Tests
 require_once dirname(__FILE__).'/AssignmentTest.php';
 require_once dirname(__FILE__).'/TemplateTest.php';
+require_once dirname(__FILE__).'/LayoutTest.php';
 require_once dirname(__FILE__).'/HelperTest.php';
 require_once dirname(__FILE__).'/CaptureHelperTest.php';
 require_once dirname(__FILE__).'/CaptureHelperContentTest.php';
@@ -28,6 +29,7 @@ class AllTests
 
 		$suite->addTestSuite('AssignmentTest');
 		$suite->addTestSuite('TemplateTest');
+		$suite->addTestSuite('LayoutTest');
 		$suite->addTestSuite('HelperTest');
 		$suite->addTestSuite('CaptureHelperTest');
 		$suite->addTestSuite('CaptureHelperContentTest');
