@@ -1,7 +1,7 @@
 <?php
 abstract class Tingle_Helper
 {
-	private $template;
+	protected $template;
 	
 	public function __construct($template)
 	{
