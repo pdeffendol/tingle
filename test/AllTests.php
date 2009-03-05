@@ -16,6 +16,7 @@ require_once dirname(__FILE__).'/HelperTest.php';
 require_once dirname(__FILE__).'/CaptureHelperTest.php';
 require_once dirname(__FILE__).'/CaptureHelperContentTest.php';
 require_once dirname(__FILE__).'/TextHelperTest.php';
+require_once dirname(__FILE__).'/AssetTagHelperTest.php';
 
 class AllTests
 {
@@ -35,6 +36,7 @@ class AllTests
 		$suite->addTestSuite('CaptureHelperTest');
 		$suite->addTestSuite('CaptureHelperContentTest');
 		$suite->addTestSuite('TextHelperTest');
+		$suite->addTestSuite('AssetTagHelperTest');
  
 		return $suite;
 	}
