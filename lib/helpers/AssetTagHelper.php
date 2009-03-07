@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/../Helper.php';
+require_once dirname(__FILE__).'/TagHelper.php';
 
 class Tingle_AssetTagHelper
 {
@@ -26,10 +26,7 @@ class Tingle_AssetTagHelper
 		$tags = array();
 		foreach ($urls as $url)
 		{
-			$tag = '<link href="'.$url.'"';
-			if ($options['media']) $tag .= ' media="'.$options['media'].'"';
-			$tag .= ' rel="stylesheet" type="text/css" />';
-			$tags[] = $tag;
+			$tags[] = Tingle_TagHelper::tag('link', array_merge($options, array('href'=>$url, 'rel'=>'stylesheet', 'type'=>'text/css')));
 		}
 		
 		return implode("\n", $tags);
@@ -42,7 +39,7 @@ class Tingle_AssetTagHelper
 		$tags = array();
 		foreach ($urls as $url)
 		{
-			$tags[] = '<script src="'.$url.'" type="text/javascript"></script>';
+			$tags[] = Tingle_TagHelper::content_tag('script', array('src'=>$url, 'type'=>'text/javascript'));
 		}
 		
 		return implode("\n", $tags);
@@ -54,7 +51,7 @@ class Tingle_AssetTagHelper
 			array('title' => strtoupper($type)),
 			$options);
 		
-		return '<link href="'.$url.'" rel="alternate" title="'.$options['title'].'" type="'.self::$feed_types[$type].'" />';
+		return Tingle_TagHelper::tag('link', array('href'=>$url, 'rel'=>'alternate', 'title'=>$options['title'], 'type'=>self::$feed_types[$type]));
 	}
 	
 	public static function set_stylesheet_path($path)
