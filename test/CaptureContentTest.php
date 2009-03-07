@@ -1,12 +1,12 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once dirname(__FILE__).'/../lib/helpers/Capture_Content.php';
+require_once dirname(__FILE__).'/../lib/helpers/CaptureContent.php';
 
-class CaptureHelperContentTest extends PHPUnit_Framework_TestCase
+class CaptureContentTest extends PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
-		$this->content = new Tingle_Helper_Capture_Content('test');
+		$this->content = new Tingle_CaptureContent('test');
 	}
 	
 	protected function setup_basic_capture()
@@ -107,7 +107,7 @@ class CaptureHelperContentTest extends PHPUnit_Framework_TestCase
 	public function test_should_not_allow_concurrent_captures()
 	{
 		$this->setExpectedException('Tingle_RenderingError');
-		$another_capture = new Tingle_Helper_Capture_Content('another');
+		$another_capture = new Tingle_CaptureContent('another');
 		$this->content->start();
 		$another_capture->start();
 	}

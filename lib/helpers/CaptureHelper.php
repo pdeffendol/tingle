@@ -1,17 +1,9 @@
 <?php
-require_once dirname(__FILE__).'/../Helper.php';
-require_once dirname(__FILE__).'/Capture_Content.php';
+require_once dirname(__FILE__).'/CaptureContent.php';
 
-class Tingle_Helper_Capture extends Tingle_Helper
+class Tingle_CaptureHelper
 {
-	private $contents;
-	
-	public function __construct($template)
-	{
-		parent::__construct($template);
-		$this->contents = array();
-	}
-	
+	private static $contents = array();
 	
 	/**
 	 * Access and manipulate a piece of captured content.
@@ -34,14 +26,14 @@ class Tingle_Helper_Capture extends Tingle_Helper
 	 * @param string $name Name of content
 	 * @return object New or existing Tingle_Helper_Capture_Content object
 	 */
-	public function content_for($name)
+	public static function content_for($name)
 	{
-		if (!isset($this->contents[$name]))
+		if (!isset(self::$contents[$name]))
 		{
-			$this->contents[$name] = new Tingle_Helper_Capture_Content($name);
+			self::$contents[$name] = new Tingle_CaptureContent($name);
 		}
 		
-		return $this->contents[$name];
+		return self::$contents[$name];
 	}
 }
 ?>

@@ -1,10 +1,9 @@
 <?php
-require_once dirname(__FILE__).'/../Helper.php';
 require_once dirname(__FILE__).'/../Inflector.php';
 
-class Tingle_Helper_Text extends Tingle_Helper
+class Tingle_TextHelper
 {
-	public function pluralize($count, $singular, $number_format = null)
+	public static function pluralize($count, $singular, $number_format = null)
 	{
 		$word = ($count == 1) ? $singular : Tingle_Inflector::pluralize($singular);
 		

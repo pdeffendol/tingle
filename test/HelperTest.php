@@ -1,21 +1,20 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__).'/../lib/Template.php';
-require_once dirname(__FILE__).'/../lib/Helper.php';
 
-class TestHelper extends Tingle_Helper
+class TestHelper
 {
-	public function do_something()
+	public static function do_something()
 	{
 		return 'Hello';
 	}
 	
-	public function do_something_with_param($text)
+	public static function do_something_with_param($text)
 	{
 		return $text;
 	}
 	
-	private function not_available()
+	private static function not_available()
 	{
 		
 	}
@@ -54,12 +53,6 @@ class HelperTest extends PHPUnit_Framework_TestCase
 	{
 		$this->setExpectedException('Tingle_InvalidHelperClass');
 		$this->tpl->register_helper('ImaginaryHelper');
-	}
-	
-	public function test_should_be_subclass_of_helper()
-	{
-		$this->setExpectedException('Tingle_InvalidHelperClass');
-		$this->tpl->register_helper('StdClass');
 	}
 	
 	public function test_should_call_helper_method()

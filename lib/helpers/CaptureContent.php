@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/../Exception.php';
 
-class Tingle_Helper_Capture_Content
+class Tingle_CaptureContent
 {
 	private $contents;
 	private $prefix = '';

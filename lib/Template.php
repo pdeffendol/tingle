@@ -12,7 +12,7 @@ class Tingle_Template
 		'active_helpers' => array()
 		);
 
-	
+
 	public function __construct($config = null)
 	{
 		$this->_config = array_merge($this->_config, (array)$config);
@@ -30,8 +30,8 @@ class Tingle_Template
 		
 		foreach ($helpers as $helper)
 		{
-			include_once dirname(__FILE__)."/helpers/$helper.php";
-			$this->register_helper('Tingle_Helper_'.$helper);
+			include_once dirname(__FILE__)."/helpers/{$helper}Helper.php";
+			$this->register_helper("Tingle_{$helper}Helper");
 		}
 	}
 	
@@ -39,8 +39,8 @@ class Tingle_Template
 	/**
 	 * Register a helper class.
 	 *
-	 * A helper class must be a subclass of Tingle_Helper.  The public methods
-	 * of the class will be registered as helper methods.
+	 * A helper class contains static methods that will be
+	 * registered as template helpers.
 	 *
 	 * Calling a registered helper method:
 	 *
@@ -50,18 +50,18 @@ class Tingle_Template
 	 */
 	public function register_helper($name)
 	{
-		if (!class_exists($name) || !is_subclass_of($name, 'Tingle_Helper'))
+		if (!class_exists($name))
 		{
 			throw new Tingle_InvalidHelperClass;
 		}
 		
-		$helpers = get_class_methods($name);
+		$helper_info = new ReflectionClass($name);
 		
-		foreach ($helpers as $helper)
+		foreach ($helper_info->getMethods() as $method)
 		{
-			if ($helper != '__construct')
+			if ($method->isPublic() && $method->isStatic())
 			{
-				$this->_config['helpers'][$helper] = $name;
+				$this->_config['helpers'][$method->getName()] = $name;
 			}
 		}
 		
