@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__).'/../Helper.php';
-require_once dirname(__FILE__).'/../Inflector.php';
 
 class Tingle_Helper_AssetTag extends Tingle_Helper
 {
