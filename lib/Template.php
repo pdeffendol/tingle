@@ -26,7 +26,7 @@ class Tingle_Template
 	 */
 	private function register_bundled_helpers()
 	{
-		$helpers = array('Capture', 'Text', 'AssetTag');
+		$helpers = array('Capture', 'Text', 'Tag', 'AssetTag', 'Url');
 		
 		foreach ($helpers as $helper)
 		{
