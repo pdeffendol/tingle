@@ -11,7 +11,8 @@ class UrlHelperTest extends PHPUnit_Framework_TestCase
 	
 	public function test_link_to_with_attributes()
 	{
-		$this->assertEquals('<a href="test.html" class="test">Test</a>', Tingle_UrlHelper::link_to('Test', 'test.html', array('class'=>'test')));
+		$tag = Tingle_UrlHelper::link_to('Test', 'test.html', array('class'=>'test'));
+		$this->assertRegexp('/class="test"/', $tag);
 	}
 	
 	public function test_link_to_if_true()
