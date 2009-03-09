@@ -1,6 +1,11 @@
 <?php
 class Tingle_TagHelper
 {
+	public static $boolean_attributes = array(
+		'disabled',
+		'multiple',
+		'readonly');
+		
 	/**
 	 * Construct and output an HTML tag.  By default it will
 	 * be XHTML compliant.
@@ -66,7 +71,11 @@ class Tingle_TagHelper
 	  $html = '';
 	  foreach ($attributes as $key => $value)
 	  {
-	    $html .= ' '.$key.'="'.self::escape_once($value).'"';
+			$value = (in_array($key, self::$boolean_attributes) && $value) ? $key : ($value === false ? 'false' : $value);
+	    if ($value !== null) 
+			{
+				$html .= ' '.$key.'="'.self::escape_once($value).'"';
+			}
 	  }
 
 	  return $html;
