@@ -6,37 +6,37 @@ class AssetTagHelperTest extends PHPUnit_Framework_TestCase
 {
 	public function test_single_stylesheet()
 	{
-		$this->assertEquals('<link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />', Tingle_AssetTagHelper::stylesheet_link_tag('style.css'));
+		$this->assertEquals('<link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" />', Tingle_AssetTagHelper::stylesheet_link_tag('style.css'));
 	}
 	
 	public function test_absolute_path_stylesheet()
 	{
-		$this->assertEquals('<link href="/elsewhere/style.css" media="screen" rel="stylesheet" type="text/css" />', Tingle_AssetTagHelper::stylesheet_link_tag('/elsewhere/style.css'));
+		$this->assertEquals('<link rel="stylesheet" href="/elsewhere/style.css" type="text/css" media="screen" />', Tingle_AssetTagHelper::stylesheet_link_tag('/elsewhere/style.css'));
 	}
 	
 	public function test_single_stylesheet_with_media()
 	{
-		$this->assertEquals('<link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />', Tingle_AssetTagHelper::stylesheet_link_tag('print.css', array('media' => 'print')));
+		$this->assertEquals('<link rel="stylesheet" href="/stylesheets/print.css" type="text/css" media="print" />', Tingle_AssetTagHelper::stylesheet_link_tag('print.css', array('media' => 'print')));
 	}
 	
 	public function test_single_stylesheet_without_media()
 	{
-		$this->assertEquals('<link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />', Tingle_AssetTagHelper::stylesheet_link_tag('style.css', array('media' => null)));
+		$this->assertEquals('<link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />', Tingle_AssetTagHelper::stylesheet_link_tag('style.css', array('media' => null)));
 	}
 	
 	public function test_multiple_stylesheets()
 	{
 		$html = Tingle_AssetTagHelper::stylesheet_link_tag(array('one.css', 'two.css'));
-		$this->assertContains('<link href="/stylesheets/one.css" media="screen" rel="stylesheet" type="text/css" />', $html, "HTML references first stylesheet");
-		$this->assertContains('<link href="/stylesheets/two.css" media="screen" rel="stylesheet" type="text/css" />', $html, "HTML references second stylesheet");
+		$this->assertContains('<link rel="stylesheet" href="/stylesheets/one.css" type="text/css" media="screen" />', $html, "HTML references first stylesheet");
+		$this->assertContains('<link rel="stylesheet" href="/stylesheets/two.css" type="text/css" media="screen" />', $html, "HTML references second stylesheet");
 	}
 	
 	public function test_stylesheet_expansion()
 	{
 		Tingle_AssetTagHelper::register_stylesheet_expansion("all", array('one.css', 'two.css'));
 		$html = Tingle_AssetTagHelper::stylesheet_link_tag("all");
-		$this->assertContains('<link href="/stylesheets/one.css" media="screen" rel="stylesheet" type="text/css" />', $html, "HTML references first stylesheet");
-		$this->assertContains('<link href="/stylesheets/two.css" media="screen" rel="stylesheet" type="text/css" />', $html, "HTML references second stylesheet");
+		$this->assertContains('<link rel="stylesheet" href="/stylesheets/one.css" type="text/css" media="screen" />', $html, "HTML references first stylesheet");
+		$this->assertContains('<link rel="stylesheet" href="/stylesheets/two.css" type="text/css" media="screen" />', $html, "HTML references second stylesheet");
 	}
 
 	public function test_single_javascript()
@@ -61,17 +61,17 @@ class AssetTagHelperTest extends PHPUnit_Framework_TestCase
 	
 	public function test_rss_feed_link()
 	{
-		$this->assertEquals('<link href="feed.rss" rel="alternate" title="RSS" type="application/rss+xml" />', Tingle_AssetTagHelper::feed_link_tag('feed.rss'));
+		$this->assertEquals('<link rel="alternate" href="feed.rss" type="application/rss+xml" title="RSS" />', Tingle_AssetTagHelper::feed_link_tag('feed.rss'));
 	}
 	
 	public function test_atom_feed_link()
 	{
-		$this->assertEquals('<link href="feed.atom" rel="alternate" title="ATOM" type="application/atom+xml" />', Tingle_AssetTagHelper::feed_link_tag('feed.atom', 'atom'));
+		$this->assertEquals('<link rel="alternate" href="feed.atom" type="application/atom+xml" title="ATOM" />', Tingle_AssetTagHelper::feed_link_tag('feed.atom', 'atom'));
 	}
 	
 	public function feed_link_with_title()
 	{
-		$this->assertEquals('<link href="feed.rss" rel="alternate" title="My Feed" type="application/rss+xml" />', Tingle_AssetTagHelper::feed_link_tag('feed.rss', 'rss', array('title' => 'My Feed')));
+		$this->assertEquals('<link rel="alternate" href="feed.rss" type="application/rss+xml" title="My Feed" />', Tingle_AssetTagHelper::feed_link_tag('feed.rss', 'rss', array('title' => 'My Feed')));
 	}
 }
 ?>

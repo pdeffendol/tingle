@@ -20,13 +20,14 @@ class Tingle_AssetTagHelper
 		$options = array_merge(
 			array('media' => 'screen'),
 			$options);
+		unset($options['href'], $options['rel'], $options['type']);
 			
 		$urls = self::expand_asset_sources('stylesheet', $sources);
 		
 		$tags = array();
 		foreach ($urls as $url)
 		{
-			$tags[] = Tingle_TagHelper::tag('link', array_merge($options, array('href'=>$url, 'rel'=>'stylesheet', 'type'=>'text/css')));
+			$tags[] = Tingle_TagHelper::tag('link', array_merge(array('rel'=>'stylesheet', 'href'=>$url, 'type'=>'text/css'), $options));
 		}
 		
 		return implode("\n", $tags);
@@ -35,13 +36,11 @@ class Tingle_AssetTagHelper
 	public static function javascript_include_tag($sources)
 	{
 		$urls = self::expand_asset_sources('javascript', $sources);
-		
 		$tags = array();
 		foreach ($urls as $url)
 		{
-			$tags[] = Tingle_TagHelper::content_tag('script', array('src'=>$url, 'type'=>'text/javascript'));
+			$tags[] = Tingle_TagHelper::content_tag('script', '', array('src'=>$url, 'type'=>'text/javascript'));
 		}
-		
 		return implode("\n", $tags);
 	}
 	
@@ -50,8 +49,9 @@ class Tingle_AssetTagHelper
 		$options = array_merge(
 			array('title' => strtoupper($type)),
 			$options);
+		unset($options['href'], $options['rel'], $options['type']);
 		
-		return Tingle_TagHelper::tag('link', array('href'=>$url, 'rel'=>'alternate', 'title'=>$options['title'], 'type'=>self::$feed_types[$type]));
+		return Tingle_TagHelper::tag('link', array_merge(array('rel'=>'alternate', 'href'=>$url, 'type'=>self::$feed_types[$type]), $options));
 	}
 	
 	public static function set_stylesheet_path($path)
