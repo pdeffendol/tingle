@@ -18,12 +18,18 @@ class TagHelperTest extends PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals('<div />', Tingle_TagHelper::tag('div'), 'Empty closed tag');
 		$this->assertEquals('<div>', Tingle_TagHelper::tag('div', array(), true), 'Open tag');
-		$this->assertEquals('<img src="blah.gif" alt="cut &amp; paste" />', Tingle_TagHelper::tag('img', array('src' => 'blah.gif', 'alt' => 'cut & paste')), 'Tag with attributes');
 	}
 	
 	public function test_content_tag()
 	{
-		$this->assertEquals('<div class="test">Test</div>', Tingle_TagHelper::content_tag('div', 'Test', array('class' => 'test')));
+		$this->assertEquals('<div>Test</div>', Tingle_TagHelper::content_tag('div', 'Test'));
+	}
+	
+	public function test_tag_with_attributes()
+	{
+		$tag = Tingle_TagHelper::tag('img', array('src' => 'blah.gif', 'alt' => 'blah'));
+		$this->assertRegexp('/src="blah.gif"/', $tag);
+		$this->assertRegexp('/alt="blah"/', $tag);
 	}
 	
 	public function test_tag_without_name()
