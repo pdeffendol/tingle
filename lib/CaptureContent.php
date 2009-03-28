@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/../Exception.php';
+require_once dirname(__FILE__).'/Exception.php';
 
 class Tingle_CaptureContent
 {

@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/CaptureContent.php';
+require_once dirname(__FILE__).'/../CaptureContent.php';
 
 class Tingle_CaptureHelper
 {

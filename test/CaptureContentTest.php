@@ -1,6 +1,6 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once dirname(__FILE__).'/../lib/helpers/CaptureContent.php';
+require_once dirname(__FILE__).'/../lib/CaptureContent.php';
 
 class CaptureContentTest extends PHPUnit_Framework_TestCase
 {
