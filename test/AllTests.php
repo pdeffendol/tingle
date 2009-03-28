@@ -8,18 +8,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
-// Tests
-require_once dirname(__FILE__).'/AssignmentTest.php';
-require_once dirname(__FILE__).'/TemplateTest.php';
-require_once dirname(__FILE__).'/LayoutTest.php';
-require_once dirname(__FILE__).'/HelperTest.php';
-require_once dirname(__FILE__).'/CaptureHelperTest.php';
-require_once dirname(__FILE__).'/CaptureContentTest.php';
-require_once dirname(__FILE__).'/TextHelperTest.php';
-require_once dirname(__FILE__).'/TagHelperTest.php';
-require_once dirname(__FILE__).'/UrlHelperTest.php';
-require_once dirname(__FILE__).'/AssetTagHelperTest.php';
-
 class AllTests
 {
 	public static function main()
@@ -31,16 +19,23 @@ class AllTests
 	{
 		$suite = new PHPUnit_Framework_TestSuite('Tingle');
 
-		$suite->addTestSuite('AssignmentTest');
-		$suite->addTestSuite('TemplateTest');
-		$suite->addTestSuite('LayoutTest');
-		$suite->addTestSuite('HelperTest');
-		$suite->addTestSuite('CaptureHelperTest');
-		$suite->addTestSuite('CaptureContentTest');
-		$suite->addTestSuite('TextHelperTest');
-		$suite->addTestSuite('TagHelperTest');
-		$suite->addTestSuite('UrlHelperTest');
-		$suite->addTestSuite('AssetTagHelperTest');
+		$tests = array(
+			'AssignmentTest',
+			'TemplateTest',
+			'LayoutTest',
+			'HelperTest',
+			'CaptureHelperTest',
+			'CaptureContentTest',
+			'TextHelperTest',
+			'TagHelperTest',
+			'UrlHelperTest',
+			'AssetTagHelperTest');
+		
+		foreach ($tests as $test)
+		{
+			include_once dirname(__FILE__)."/{$test}.php";
+			$suite->addTestSuite($test);
+		}
  
 		return $suite;
 	}
