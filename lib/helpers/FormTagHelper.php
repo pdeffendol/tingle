@@ -19,15 +19,20 @@ class Tingle_FormTagHelper
 		return '</form>';
 	}
 	
+	public static function form_tag($attributes = array())
+	{
+		return self::start_form_tag($attributes);
+	}
+	
 	public static function checkbox_tag($name, $value = "1", $checked = false, $attributes = array())
 	{
 		$checked = $checked ? "checked" : null;
-		return Tingle_TagHelper::tag('input', array_merge(array('type' => 'checkbox', 'name' => $name, 'value' => $value, 'checked' => $checked, 'id' => self::sanitize_id($name))));
+		return Tingle_TagHelper::tag('input', array_merge(array('type' => 'checkbox', 'name' => $name, 'value' => $value, 'checked' => $checked, 'id' => self::sanitize_id($name)), $attributes));
 	}
 	
 	public static function file_field_tag($name, $attributes = array())
 	{
-		return self::text_field_tag($name, array_merge(array('type' => 'file'), $attributes));
+		return self::text_field_tag($name, null, array_merge(array('type' => 'file'), $attributes));
 	}
 	
 	public static function hidden_field_tag($name, $value = null, $attributes = array())
@@ -42,7 +47,7 @@ class Tingle_FormTagHelper
 	
 	public static function password_field_tag($name, $value = null, $attributes = array())
 	{
-		return self::text_field_tag($name, $value, array_merge(array('type' => 'pasword'), $attributes));
+		return self::text_field_tag($name, $value, array_merge(array('type' => 'password'), $attributes));
 	}
 	
 	public static function radio_button_tag($name, $value, $checked = false, $attributes = array())
@@ -87,7 +92,7 @@ class Tingle_FormTagHelper
 	 */
 	private static function sanitize_id($string)
 	{
-		return preg_replace('/[^-a-zA-Z0-9:.]/', '_', str_replace(']', '', $string));
+		return preg_replace('/[^-a-zA-Z0-9:.]/', '_', str_replace(array('[]', ']'), '', $string));
 	}
 }
 ?>
