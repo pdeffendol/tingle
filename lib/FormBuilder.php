@@ -51,63 +51,63 @@ class Tingle_FormBuilder
 	/**
 	 * return string Checkbox HTML
 	 */
-	public function checkbox($name, $attributes = array(), $checked_value = '1', $unchecked_value = '0')
+	public function checkbox($name, $html_attributes = array(), $checked_value = '1', $unchecked_value = '0')
 	{
 		$value = $this->get_model_data($name);
 		$checked = ($value == $checked_value);
-		return Tingle_FormTagHelper::hidden_field_tag($name, $unchecked_value, array('id' => null)).Tingle_FormTagHelper::checkbox_tag($name, $checked_value, $checked, $attributes);
+		return Tingle_FormTagHelper::hidden_field_tag($name, $unchecked_value, array('id' => null)).Tingle_FormTagHelper::checkbox_tag($name, $checked_value, $checked, $html_attributes);
 	}
 	
-	public function grouped_checkbox($name, $tag_value, $attributes = array())
+	public function grouped_checkbox($name, $tag_value, $html_attributes = array())
 	{
 		$values = $this->get_model_data($name);
 		
 		$name = (substr($name, -2, 2) == '[]') ? $name : $name.'[]';
 		$checked = is_array($values) ? in_array($tag_value, $values) : $tag_value == $values;
 		$id = Tingle_FormTagHelper::sanitize_id($name).'_'.Tingle_FormTagHelper::sanitize_id($tag_value);
-		$attributes = array_merge(array('id' => $id), $attributes);
-		return Tingle_FormTagHelper::checkbox_tag($name, $tag_value, $checked, $attributes);
+		$html_attributes = array_merge(array('id' => $id), $html_attributes);
+		return Tingle_FormTagHelper::checkbox_tag($name, $tag_value, $checked, $html_attributes);
 	}
 
-	public function file_field($name, $attributes = array())
+	public function file_field($name, $html_attributes = array())
 	{
-		return Tingle_FormTagHelper::file_field_tag($name, $attributes);
+		return Tingle_FormTagHelper::file_field_tag($name, $html_attributes);
 	}
 	
-	public function hidden_field($name, $attributes = array())
+	public function hidden_field($name, $html_attributes = array())
 	{
 		$value = strval($this->get_model_data($name));
-		return Tingle_FormTagHelper::hidden_field_tag($name, $value, $attributes);
+		return Tingle_FormTagHelper::hidden_field_tag($name, $value, $html_attributes);
 	}
 
-	public function label($name, $text, $attributes = array())
+	public function label($name, $text, $html_attributes = array())
 	{
-		return Tingle_TagHelper::content_tag('label', $text, array_merge(array('for' => Tingle_FormTagHelper::sanitize_id($name)), $attributes));
+		return Tingle_TagHelper::content_tag('label', $text, array_merge(array('for' => Tingle_FormTagHelper::sanitize_id($name)), $html_attributes));
 	}
 
-	public function password_field($name, $attributes = array())
+	public function password_field($name, $html_attributes = array())
 	{
 		$value = strval($this->get_model_data($name));
-		return Tingle_FormTagHelper::password_field_tag($name, $value, $attributes);
+		return Tingle_FormTagHelper::password_field_tag($name, $value, $html_attributes);
 	}
 
-	public function radio_button($name, $tag_value, $attributes = array())
+	public function radio_button($name, $tag_value, $html_attributes = array())
 	{
 		$value = strval($this->get_model_data($name));
 		$checked = ($value == $tag_value);
-		return Tingle_FormTagHelper::radio_button_tag($name, $tag_value, $checked, $attributes);
+		return Tingle_FormTagHelper::radio_button_tag($name, $tag_value, $checked, $html_attributes);
 	}
 
-	public function text_area($name, $attributes = array())
+	public function text_area($name, $html_attributes = array())
 	{
 		$value = strval($this->get_model_data($name));
-		return Tingle_FormTagHelper::text_area_tag($name, $value, $attributes);
+		return Tingle_FormTagHelper::text_area_tag($name, $value, $html_attributes);
 	}
 
-	public function text_field($name, $attributes = array())
+	public function text_field($name, $html_attributes = array())
 	{
 		$value = strval($this->get_model_data($name));
-		return Tingle_FormTagHelper::text_field_tag($name, $value, $attributes);
+		return Tingle_FormTagHelper::text_field_tag($name, $value, $html_attributes);
 	}
 }
 ?>

@@ -7,15 +7,15 @@ class Tingle_FormHelper
 {
 	private static $form_builder;
 	
-	public static function start_form_for($model = array(), $attributes = array())
+	public static function start_form_for($model = array(), $html_attributes = array())
 	{
 		if (isset(self::$form_builder))
 		{
 			throw new Tingle_RenderingError('Nested form_for not allowed.  (Already inside a form_for block.)');
 		}
 		
-		$builder = $attributes['builder'] ? strval($attributes['builder']) : new Tingle_FormBuilder($model);
-		unset($attributes['builder']);
+		$builder = $html_attributes['builder'] ? strval($html_attributes['builder']) : new Tingle_FormBuilder($model);
+		unset($html_attributes['builder']);
 
 		if (!($builder instanceof Tingle_FormBuilder))
 		{
@@ -31,7 +31,7 @@ class Tingle_FormHelper
 		
 		self::$form_builder = $builder;
 		
-		return Tingle_FormTagHelper::start_form_tag($attributes);
+		return Tingle_FormTagHelper::start_form_tag($html_attributes);
 	}
 	
 	public static function end_form_for()
@@ -40,57 +40,57 @@ class Tingle_FormHelper
 		return Tingle_FormTagHelper::end_form_tag();
 	}
 	
-	public static function form_for($model = array(), $attributes = array())
+	public static function form_for($model = array(), $html_attributes = array())
 	{
-		return self::start_form_for($model, $attributes);
+		return self::start_form_for($model, $html_attributes);
 	}
 	
 	/**
 	 * return string Checkbox HTML
 	 */
-	public static function checkbox($name, $attributes = array(), $checked_value = '1', $unchecked_value = '0')
+	public static function checkbox($name, $html_attributes = array(), $checked_value = '1', $unchecked_value = '0')
 	{
-		return self::delegate_to_builder('checkbox', $name, $attributes, $checked_value, $unchecked_value);
+		return self::delegate_to_builder('checkbox', $name, $html_attributes, $checked_value, $unchecked_value);
 	}
 
-	public static function file_field($name, $attributes = array())
+	public static function file_field($name, $html_attributes = array())
 	{
-		return self::delegate_to_builder('file_field', $name, $attributes);
+		return self::delegate_to_builder('file_field', $name, $html_attributes);
 	}
 	
-	public static function grouped_checkbox($name, $value, $attributes = array())
+	public static function grouped_checkbox($name, $value, $html_attributes = array())
 	{
-		return self::delegate_to_builder('grouped_checkbox', $name, $value, $attributes);
+		return self::delegate_to_builder('grouped_checkbox', $name, $value, $html_attributes);
 	}
 	
-	public static function hidden_field($name, $attributes = array())
+	public static function hidden_field($name, $html_attributes = array())
 	{
-		return self::delegate_to_builder('hidden_field', $name, $attributes);
+		return self::delegate_to_builder('hidden_field', $name, $html_attributes);
 	}
 
-	public static function label($name, $text = null, $attributes = array())
+	public static function label($name, $text = null, $html_attributes = array())
 	{
-		return self::delegate_to_builder('label', $name, $text, $attributes);
+		return self::delegate_to_builder('label', $name, $text, $html_attributes);
 	}
 
-	public static function password_field($name, $attributes = array())
+	public static function password_field($name, $html_attributes = array())
 	{
-		return self::delegate_to_builder('password_field', $name, $attributes);
+		return self::delegate_to_builder('password_field', $name, $html_attributes);
 	}
 
-	public static function radio_button($name, $value, $attributes = array())
+	public static function radio_button($name, $value, $html_attributes = array())
 	{
-		return self::delegate_to_builder('radio_button', $name, $value, $attributes);
+		return self::delegate_to_builder('radio_button', $name, $value, $html_attributes);
 	}
 
-	public static function text_area($name, $attributes = array())
+	public static function text_area($name, $html_attributes = array())
 	{
-		return self::delegate_to_builder('text_area', $name, $attributes);
+		return self::delegate_to_builder('text_area', $name, $html_attributes);
 	}
 
-	public static function text_field($name, $attributes = array())
+	public static function text_field($name, $html_attributes = array())
 	{
-		return self::delegate_to_builder('text_field', $name, $attributes);
+		return self::delegate_to_builder('text_field', $name, $html_attributes);
 	}
 	
 	private static function delegate_to_builder()

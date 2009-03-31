@@ -15,9 +15,9 @@ class Tingle_TagHelper
 	 * @param bool   $open When set to true, will prevent XHTML closing slash
 	 * @return string Complete HTML tag
 	 */
-	public function tag($name, $attributes = array(), $open = false)
+	public function tag($name, $html_attributes = array(), $open = false)
 	{
-	  return ($name ? '<'.$name.self::tag_attributes($attributes).(($open) ? '>' : ' />') : '');
+	  return ($name ? '<'.$name.self::tag_attributes($html_attributes).(($open) ? '>' : ' />') : '');
 	}
 
 
@@ -29,9 +29,9 @@ class Tingle_TagHelper
 	 * @param array  $options HTML attributes to include within the opening tag
 	 * @return string Complete HTML container
 	 */
-	public function content_tag($name, $content = '', $attributes = array())
+	public function content_tag($name, $content = '', $html_attributes = array())
 	{
-		return ($name ? '<'.$name.self::tag_attributes($attributes).'>'.$content.'</'.$name.'>' : '');
+		return ($name ? '<'.$name.self::tag_attributes($html_attributes).'>'.$content.'</'.$name.'>' : '');
 	}
 	
 
@@ -66,10 +66,10 @@ class Tingle_TagHelper
 	 * @param array $options Array of name/value pairs of tag attributes
 	 * @return string HTML options to put inside a tag
 	 */
-	private function tag_attributes($attributes = array())
+	private function tag_attributes($html_attributes = array())
 	{
 	  $html = '';
-	  foreach ($attributes as $key => $value)
+	  foreach ($html_attributes as $key => $value)
 	  {
 			$value = (in_array($key, self::$boolean_attributes) && $value) ? $key : ($value === false ? 'false' : $value);
 	    if ($value !== null) 
