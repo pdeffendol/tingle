@@ -191,5 +191,20 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('foo', Tingle_FormTagHelper::sanitize_id('foo[]'), 'Name with empty subscript');
 		$this->assertEquals('foo_bar_name', Tingle_FormTagHelper::sanitize_id('foo[bar][name]'), 'Name with multiple subscripts');
 	}
+	
+	public function test_options_for_select()
+	{
+		$actual = Tingle_FormTagHelper::options_for_select(array(1 => 'one', 2 => 'two'));
+		$this->assertEquals("<option value=\"1\">one</option>\n<option value=\"2\">two</option>\n", $actual, 'should output correct option tags');
+
+		$actual = Tingle_FormTagHelper::options_for_select(array(1 => 'one', 'others' => array(2 => 'two')));
+		$this->assertEquals("<option value=\"1\">one</option>\n<optgroup label=\"others\"><option value=\"2\">two</option>\n</optgroup>\n", $actual, 'should output correct optgroup tags');
+
+		$actual = Tingle_FormTagHelper::options_for_select(array(1 => 'one', 2 => 'two'), 1);
+		$this->assertEquals("<option value=\"1\" selected=\"selected\">one</option>\n<option value=\"2\">two</option>\n", $actual, 'should mark single selected value');
+
+		$actual = Tingle_FormTagHelper::options_for_select(array(1 => 'one', 2 => 'two'), array(1, 2));
+		$this->assertEquals("<option value=\"1\" selected=\"selected\">one</option>\n<option value=\"2\" selected=\"selected\">two</option>\n", $actual, 'should mark multiple selected values');
+	}
 }
 ?>

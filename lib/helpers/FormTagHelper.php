@@ -199,6 +199,43 @@ class Tingle_FormTagHelper
 	{
 		return Tingle_TagHelper::tag('input', array_merge(array('type' => 'text', 'name' => $name, 'value' => $value, 'id' => self::sanitize_id($name)), $attributes));
 	}
+	
+	
+	/**
+	 * Generate a list of <option> tags from an array, using the array keys as
+	 * the value attributes, and the corresponding array values as the labels.
+	 *
+	 * If arrays are nested, an <optgroup> tag will be generated using the array
+	 * key as its label, and containing <option> tags for each element of the
+	 * nested array.
+	 *
+	 * @param array $choices Set of $value=>$label choices
+	 * @param mixed $selected Single value or array of values that indicate keys of
+	 *                        options to mark as selected.
+	 * @return string Set of <option> tags
+	 */
+	public static function options_for_select($choices, $selected = null)
+	{
+		$selected_reversed = array_flip(array_map('strval', array_values((array)$selected)));
+		
+		$option_tags = '';
+		foreach ($choices as $key => $value)
+		{
+		  if (is_array($value))
+		  {
+		    $option_tags .= Tingle_TagHelper::content_tag('optgroup', self::options_for_select($value, $selected), array('label' => $key))."\n";
+		  }
+		  else
+		  {
+		    $html_attributes = array('value' => $key);
+		    if (isset($selected_reversed[strval($key)])) $html_attributes['selected'] = 'selected';
+		
+		    $option_tags .= Tingle_TagHelper::content_tag('option', $value, $html_attributes)."\n";
+		  }
+		}
+		
+		return $option_tags;
+	}
 
 
 	/**
