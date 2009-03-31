@@ -212,7 +212,7 @@ class Tingle_FormTagHelper
 	 * @param string $string Text to convert
 	 * return string Sanitized text
 	 */
-	private static function sanitize_id($string)
+	public static function sanitize_id($string)
 	{
 		return preg_replace('/[^-a-zA-Z0-9:.]/', '_', str_replace(array('[]', ']'), '', $string));
 	}
