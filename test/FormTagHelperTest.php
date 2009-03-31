@@ -40,15 +40,6 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		$this->assertRegexp('/class="blah"/', $actual, "Additional attributes");
 	}
 	
-	public function test_checkbox_tag_id()
-	{
-		$actual = Tingle_FormTagHelper::checkbox_tag('foo[name]');
-		$this->assertRegexp('/id="foo_name"/', $actual);
-
-		$actual = Tingle_FormTagHelper::checkbox_tag('foo[]');
-		$this->assertRegexp('/id="foo"/', $actual);
-	}
-	
 	public function test_file_field_tag()
 	{
 		$actual = Tingle_FormTagHelper::file_field_tag('upload');
@@ -113,12 +104,6 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		$actual = Tingle_FormTagHelper::radio_button_tag('foo', 'bar', false, array('class' => 'blah'));
 		$this->assertRegexp('/class="blah"/', $actual, "Additional attributes");	
 	}
-	
-	public function test_radio_button_tag_id()
-	{
-		$actual = Tingle_FormTagHelper::radio_button_tag('foo[bar]', 'yes');
-		$this->assertRegexp('/id="foo_bar_yes"/', $actual);
-	}
 
 	public function test_select_tag()
 	{
@@ -146,15 +131,6 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		
 		$actual = Tingle_FormTagHelper::select_tag('foo', null, array('class' => 'blah'));
 		$this->assertRegexp('/class="blah"/', $actual, "Additional attributes");	
-	}
-	
-	public function test_select_tag_id()
-	{
-		$actual = Tingle_FormTagHelper::select_tag('foo[name]');
-		$this->assertRegexp('/id="foo_name"/', $actual);
-
-		$actual = Tingle_FormTagHelper::select_tag('foo[]');
-		$this->assertRegexp('/id="foo"/', $actual);
 	}
 	
 	public function test_submit_tag()
@@ -194,12 +170,6 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		$this->assertRegexp('/class="blah"/', $actual, "Additional attributes");
 	}
 	
-	public function test_text_area_tag_id()
-	{
-		$actual = Tingle_FormTagHelper::text_area_tag('foo[name]');
-		$this->assertRegexp('/id="foo_name"/', $actual);
-	}
-	
 	public function test_text_field_tag()
 	{
 		$actual = Tingle_FormTagHelper::text_field_tag('foo', 'bar');
@@ -214,10 +184,12 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		$this->assertRegexp('/class="blah"/', $actual, "Additional attributes");
 	}
 	
-	public function test_text_field_tag_id()
+	public function test_sanitize_id()
 	{
-		$actual = Tingle_FormTagHelper::text_field_tag('foo[name]', 'bar');
-		$this->assertRegexp('/id="foo_name"/', $actual);
+		$this->assertEquals('foo', Tingle_FormTagHelper::sanitize_id('foo'), 'Standard name');
+		$this->assertEquals('foo_name', Tingle_FormTagHelper::sanitize_id('foo[name]'), 'Name with subscript');
+		$this->assertEquals('foo', Tingle_FormTagHelper::sanitize_id('foo[]'), 'Name with empty subscript');
+		$this->assertEquals('foo_bar_name', Tingle_FormTagHelper::sanitize_id('foo[bar][name]'), 'Name with multiple subscripts');
 	}
 }
 ?>
