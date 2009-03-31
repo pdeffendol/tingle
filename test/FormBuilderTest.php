@@ -132,6 +132,59 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$this->assertTag($matcher, $actual, 'Radio button not matching value should not be checked');
 	}
 	
+	public function test_select()
+	{
+		$actual = $this->builder->select('string_field', array('bar' => 'Bar'));
+		$matcher = array('tag' => 'select', 
+		                 'attributes' => array(
+			                 'name' => 'string_field'),
+		                 'descendant' => array(
+			                 'tag' => 'option',
+			                   'attributes' => array(
+				                   'value' => 'bar',
+				                   'selected' => null)));
+		$this->assertTag($matcher, $actual, 'No options are selected when value doesn\'t match');
+		
+		$actual = $this->builder->select('string_field', array('foo' => 'Bar'));
+		$matcher['descendant']['attributes']['value'] = 'foo';
+		$matcher['descendant']['attributes']['selected'] = 'selected';
+		$this->assertTag($matcher, $actual, 'Matching option is selected');
+		
+		$actual = $this->builder->select('bogus', array('foo' => 'Bar'), array('include_blank' => true));
+		$matcher = array('tag' => 'option', 
+		                 'attributes' => array(
+			                 'value' => ''),
+			               'content' => null);
+		$this->assertTag($matcher, $actual, 'include_blank as true creates an empty option');
+		
+		$actual = $this->builder->select('bogus', array('foo' => 'Bar'), array('include_blank' => 'None'));
+		$matcher = array('tag' => 'option', 
+		                 'attributes' => array(
+			                 'value' => ''),
+			               'content' => 'None');
+		$this->assertTag($matcher, $actual, 'include_blank as string creates an empty option with string as label');
+		
+		$actual = $this->builder->select('bogus', array('foo' => 'Bar'), array('prompt' => true));
+		$matcher = array('tag' => 'option', 
+		                 'attributes' => array(
+			                 'value' => ''),
+			               'content' => 'Select one...');
+		$this->assertTag($matcher, $actual, 'prompt as true creates an empty option when no value is chosen');
+		
+		$actual = $this->builder->select('bogus', array('foo' => 'Bar'), array('prompt' => 'Choose'));
+		$matcher = array('tag' => 'option', 
+		                 'attributes' => array(
+			                 'value' => ''),
+			               'content' => 'Choose');
+		$this->assertTag($matcher, $actual, 'prompt as string creates an empty option with string as label when no value is chosen');
+
+		$actual = $this->builder->select('string_field', array('foo' => 'Bar'), array('prompt' => true));
+		$matcher = array('tag' => 'select', 
+		                 'children' => array(
+			                 'count' => 1));
+		$this->assertTag($matcher, $actual, 'prompt does not create an option when a value is chosen');
+	}
+	
 	public function test_text_area()
 	{
 		$actual = $this->builder->text_area('string_field');

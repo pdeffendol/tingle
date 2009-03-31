@@ -82,6 +82,11 @@ class Tingle_FormHelper
 	{
 		return self::delegate_to_builder('radio_button', $name, $value, $html_attributes);
 	}
+	
+	public static function select($name, $choices, $options = array(), $html_attributes = array())
+	{
+		return self::delegate_to_builder('select', $name, $choices, $options, $html_attributes);
+	}
 
 	public static function text_area($name, $html_attributes = array())
 	{

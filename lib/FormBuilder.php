@@ -97,6 +97,15 @@ class Tingle_FormBuilder
 		$checked = ($value == $tag_value);
 		return Tingle_FormTagHelper::radio_button_tag($name, $tag_value, $checked, $html_attributes);
 	}
+	
+	public function select($name, $choices, $options = array(), $html_attributes = array())
+	{
+		$value = strval($this->get_model_data($name));
+
+		$option_tags = $this->add_default_select_options(Tingle_FormTagHelper::options_for_select($choices, $value), $options, $value);
+
+		return Tingle_FormTagHelper::select_tag($name, $option_tags, $html_attributes);
+	}
 
 	public function text_area($name, $html_attributes = array())
 	{
@@ -108,6 +117,27 @@ class Tingle_FormBuilder
 	{
 		$value = strval($this->get_model_data($name));
 		return Tingle_FormTagHelper::text_field_tag($name, $value, $html_attributes);
+	}
+	
+	
+	/**
+	 * Add additional option tags for the following select options:
+	 *  'include_blank'
+	 *  'prompt'
+	 */
+	private function add_default_select_options($option_tags, $options, $value = null)
+	{
+		if ($options['include_blank'])
+		{
+			$option_tags = '<option value="">'.(is_string($options['include_blank']) ? $options['include_blank'] : '').'</option>' . $option_tags;
+		}
+
+		if ($options['prompt'] && !$value)
+		{
+			$option_tags = '<option value="">'.(is_string($options['prompt']) ? $options['prompt'] : 'Select one...').'</option>' . $option_tags;
+		}
+		
+		return $option_tags;
 	}
 }
 ?>
