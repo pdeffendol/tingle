@@ -18,5 +18,14 @@ class TextHelperTest extends PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals('3001.00 items', Tingle_TextHelper::pluralize(3001, 'item', "%.2f"));
 	}
+	
+	public function test_truncate()
+	{
+		$text = "This text is too long";
+		
+		$this->assertEquals('This text...', Tingle_TextHelper::truncate($text, 12), 'Default truncation options');
+		$this->assertEquals('This text!', Tingle_TextHelper::truncate($text, 12, '!'), 'Different replacement text');
+		$this->assertEquals('This te...', Tingle_TextHelper::truncate($text, 10, '...', true), 'Break words');
+	}
 }
 ?>
