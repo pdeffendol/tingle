@@ -416,7 +416,8 @@ class Tingle_Template
 	 * path and return its full path.
 	 *
 	 * This can be used along with the PHP include statement to
-	 * insert sub-templates.
+	 * insert sub-templates.  (Use render_partial if you need
+	 * to pass local variables to your sub-templates.)
 	 *
 	 * <?php include $this->template('header.tpl'); ?>
 	 *
