@@ -388,6 +388,7 @@ class Tingle_Template
 			extract($this->get_assignments(), EXTR_REFS);
 		}
 		extract((array)$locals, EXTR_OVERWRITE | EXTR_REFS);
+		unset($locals);
 		
 		// Capture template output
 		try 
