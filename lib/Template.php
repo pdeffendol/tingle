@@ -344,14 +344,29 @@ class Tingle_Template
 	
 	
 	/**
+	 * Render a partial template, optionally passing in some local
+	 * variables.
+	 *
+	 * @param string $template Path to template file
+	 * @param array  $locals   Associative array of local variables to assign
+	 * return string Results of processing template
+	 */
+	protected function render_partial($template, $locals = array())
+	{
+		return $this->render_without_layout($template, $locals);
+	}
+	
+	
+	/**
 	 * Process a template file and return the results as a string.  If a template 
 	 * filename is not provided, then use the filename already provided by 
 	 * ::set_template()
 	 *
 	 * @param string $template Path to template file
+	 * @param array  $locals   Associative array of local variables to assign
 	 * @return string Results of processing template
 	 */
-	private function render_without_layout($template = null)
+	private function render_without_layout($template = null, $locals = array())
 	{
 		if ($template === null)
 		{
@@ -372,6 +387,7 @@ class Tingle_Template
 		{
 			extract($this->get_assignments(), EXTR_REFS);
 		}
+		extract((array)$locals, EXTR_OVERWRITE | EXTR_REFS);
 		
 		// Capture template output
 		try 

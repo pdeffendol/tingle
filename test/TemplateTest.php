@@ -86,5 +86,32 @@ class TemplateTest extends PHPUnit_Framework_TestCase
 		$this->tpl->set_extract_vars(true);
 		$this->assertEquals('something: [Hello] empty: []', $this->tpl->render('extracted_no_config.tpl'));
 	}
+	
+	public function test_render_partial()
+	{
+		$this->tpl->partial = 'basic.tpl';
+		$this->assertEquals('Data: Hello', $this->tpl->render('partial.tpl'));
+	}
+	
+	public function test_render_partial_with_locals()
+	{
+		$this->tpl->partial = 'extracted.tpl';
+		$this->assertEquals('Data: Goodbye', $this->tpl->render('partial_with_locals.tpl'), 'Locals are available in template as plain variables');
+		
+		$this->tpl->partial = 'basic.tpl';
+		$this->assertEquals('Data: Hello', $this->tpl->render('partial_with_locals.tpl'), 'Locals do not override template variables');
+
+		$this->tpl->partial = 'extracted.tpl';
+		$this->tpl->set_extract_vars();
+		$this->assertEquals('Data: Goodbye', $this->tpl->render('partial_with_locals.tpl'), 'Locals override extracted template variables');
+	}
+	
+	public function test_render_partial_should_fail_on_missing_template()
+	{
+		$this->setExpectedException('Tingle_TemplateNotFoundException');
+
+		$this->tpl->partial = 'bad_template.tpl';
+		$result = $this->tpl->render('partial.tpl');
+	}
 }
 ?>
