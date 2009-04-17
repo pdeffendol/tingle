@@ -60,6 +60,7 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 			                 'type' => 'file',
+											 'id' => 'upload',
 			                 'name' => 'upload'));
 		$this->assertTag($matcher, $actual, 'Default attributes');
 	}
@@ -71,6 +72,7 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		                 'attributes' => array(
 			                 'type' => 'hidden',
 											 'value' => 'bar',
+											 'id' => 'foo',
 			                 'name' => 'foo'));
 		$this->assertTag($matcher, $actual, 'Default attributes');
 	}
@@ -84,7 +86,8 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 			                 'name' => null,
 											 'src' => 'submit.gif'));
 		$this->assertTag($matcher, $actual, 'Default attributes');
-
+		$this->assertNotContains('id=', $actual, 'No id attribute by default');
+		
 		$actual = Tingle_FormTagHelper::image_submit_tag('submit.gif', array('name' => 'foo'));
 		$this->assertRegexp('/name="foo"/', $actual, "Additional attributes");
 	}
@@ -96,6 +99,7 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		                 'attributes' => array(
 			                 'type' => 'password',
 											 'value' => 'bar',
+											 'id' => 'foo',
 			                 'name' => 'foo'));
 		$this->assertTag($matcher, $actual, 'Default attributes');
 	}
@@ -131,6 +135,7 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		$actual = Tingle_FormTagHelper::select_tag('foo', '<option>Bar</option>');
 		$matcher = array('tag' => 'select', 
 		                 'attributes' => array(
+											 'id' => 'foo',
 			                 'name' => 'foo'),
 			               'descendant' => array(
 				               'tag' => 'option',
@@ -156,6 +161,7 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 											 'value' => 'Save',
 											 'name' => null));
 		$this->assertTag($matcher, $actual, 'Default attributes');
+		$this->assertNotContains('id=', $actual, 'No id attribute by default');
 		
 		$actual = Tingle_FormTagHelper::submit_tag('Update');
 		$this->assertRegexp('/value="Update"/', $actual, "Setting button label");
@@ -169,6 +175,7 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		$actual = Tingle_FormTagHelper::text_area_tag('foo');
 		$matcher = array('tag' => 'textarea', 
 		                 'attributes' => array(
+			                 'id' => 'foo',
 			                 'name' => 'foo'),
 			               'content' => null);
 		$this->assertTag($matcher, $actual, 'Default attributes');
@@ -176,6 +183,7 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		$actual = Tingle_FormTagHelper::text_area_tag('foo', 'bar');
 		$matcher = array('tag' => 'textarea', 
 		                 'attributes' => array(
+			                 'id' => 'foo',
 			                 'name' => 'foo'),
 			               'content' => 'bar');
 		$this->assertTag($matcher, $actual, 'with contents');
@@ -191,6 +199,7 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		                 'attributes' => array(
 			                 'type' => 'text',
 											 'value' => 'bar',
+											 'id' => 'foo',
 			                 'name' => 'foo'));
 		$this->assertTag($matcher, $actual, 'Default attributes');
 		

@@ -175,7 +175,7 @@ class Tingle_FormTagHelper
 	 */
 	public static function submit_tag($value = 'Save', $html_attributes = array())
 	{
-		return Tingle_TagHelper::tag('input', array_merge(array('type' => 'submit', 'value' => $value, 'id' => self::sanitize_id($name)), $html_attributes));
+		return Tingle_TagHelper::tag('input', array_merge(array('type' => 'submit', 'value' => $value), $html_attributes));
 	}
 
 
