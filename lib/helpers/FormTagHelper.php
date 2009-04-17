@@ -27,8 +27,8 @@ class Tingle_FormTagHelper
 		{
 			$action_or_attributes = array('action' => $action_or_attributes);
 		}
-
 		$html_attributes = array_merge($action_or_attributes, $html_attributes);
+		
 		if ($html_attributes['multipart'])
 		{
 			$html_attributes['enctype'] = 'multipart/form-data';
