@@ -64,25 +64,43 @@ class FormHelperTest extends PHPUnit_Framework_TestCase
 	
 	public function test_start_form_for_with_default_builder()
 	{
-		$start_tag = Tingle_FormHelper::start_form_for(array());
-		$this->assertEquals('<form method="post">', $start_tag);
+		$actual = Tingle_FormHelper::start_form_for(array(), 'test');
+		$matcher = array('tag' => 'form',
+		                 'attributes' => array(
+			                 'action' => 'test',
+			                 'method' => 'post'));
+		$this->assertTag($matcher, $actual, 'Default attributes');
 	}
 	
+	public function test_start_form_for_with_two_parameters()
+	{
+		$actual = Tingle_FormHelper::start_form_for(array(), array('action' => 'test'));
+		$matcher = array('tag' => 'form',
+		                 'attributes' => array(
+			                 'action' => 'test',
+			                 'method' => 'post'));
+		$this->assertTag($matcher, $actual, 'Default attributes in one parameter');
+	}
+
 	public function test_start_form_for_with_custom_builder()
 	{
-		$start_tag = Tingle_FormHelper::start_form_for(array(), array('builder' => 'MockBuilder'));
-		$this->assertEquals('<form method="post">', $start_tag);
+		$actual = Tingle_FormHelper::start_form_for(array(), 'test', array('builder' => 'MockBuilder'));
+		$matcher = array('tag' => 'form',
+		                 'attributes' => array(
+			                 'action' => 'test',
+			                 'method' => 'post'));
+		$this->assertTag($matcher, $actual);
 	}
 	
 	public function test_start_form_for_with_invalid_builder()
 	{
 		$this->setExpectedException('Tingle_RenderingError');
-		$start_tag = Tingle_FormHelper::start_form_for(array(), array('builder' => 'Bad'));
+		$start_tag = Tingle_FormHelper::start_form_for(array(), 'test', array('builder' => 'Bad'));
 	}
 	
 	public function test_end_form_for()
 	{
-		Tingle_FormHelper::start_form_for(array(), array('builder' => 'MockBuilder'));
+		Tingle_FormHelper::start_form_for(array(), 'test', array('builder' => 'MockBuilder'));
 		$this->assertEquals('</form>', Tingle_FormHelper::end_form_for());		
 	}
 	
@@ -94,55 +112,55 @@ class FormHelperTest extends PHPUnit_Framework_TestCase
 	
 	public function test_checkbox()
 	{
-		Tingle_FormHelper::start_form_for(array(), array('builder' => 'MockBuilder'));
+		Tingle_FormHelper::start_form_for(array(), 'test', array('builder' => 'MockBuilder'));
 		$this->assertEquals('checkbox', Tingle_FormHelper::checkbox('foo'));
 	}
 	
 	public function test_file_field()
 	{
-		Tingle_FormHelper::start_form_for(array(), array('builder' => 'MockBuilder'));
+		Tingle_FormHelper::start_form_for(array(), 'test', array('builder' => 'MockBuilder'));
 		$this->assertEquals('file field', Tingle_FormHelper::file_field('foo'));
 	}
 	
 	public function hidden_field()
 	{
-		Tingle_FormHelper::start_form_for(array(), array('builder' => 'MockBuilder'));
+		Tingle_FormHelper::start_form_for(array(), 'test', array('builder' => 'MockBuilder'));
 		$this->assertEquals('hidden field', Tingle_FormHelper::hidden_field('foo'));
 	}
 	
 	public function test_label()
 	{
-		Tingle_FormHelper::start_form_for(array(), array('builder' => 'MockBuilder'));
+		Tingle_FormHelper::start_form_for(array(), 'test', array('builder' => 'MockBuilder'));
 		$this->assertEquals('label', Tingle_FormHelper::label('foo'));
 	}
 	
 	public function test_password_field()
 	{
-		Tingle_FormHelper::start_form_for(array(), array('builder' => 'MockBuilder'));
+		Tingle_FormHelper::start_form_for(array(), 'test', array('builder' => 'MockBuilder'));
 		$this->assertEquals('password field', Tingle_FormHelper::password_field('foo'));
 	}
 	
 	public function test_radio_button()
 	{
-		Tingle_FormHelper::start_form_for(array(), array('builder' => 'MockBuilder'));
+		Tingle_FormHelper::start_form_for(array(), 'test', array('builder' => 'MockBuilder'));
 		$this->assertEquals('radio button', Tingle_FormHelper::radio_button('foo', 'bar'));
 	}
 	
 	public function test_select()
 	{
-		Tingle_FormHelper::start_form_for(array(), array('builder' => 'MockBuilder'));
+		Tingle_FormHelper::start_form_for(array(), 'test', array('builder' => 'MockBuilder'));
 		$this->assertEquals('select', Tingle_FormHelper::select('foo', 'bar'));
 	}
 	
 	public function test_text_area()
 	{
-		Tingle_FormHelper::start_form_for(array(), array('builder' => 'MockBuilder'));
+		Tingle_FormHelper::start_form_for(array(), 'test', array('builder' => 'MockBuilder'));
 		$this->assertEquals('text area', Tingle_FormHelper::text_area('foo'));
 	}
 	
 	public function test_text_field()
 	{
-		Tingle_FormHelper::start_form_for(array(), array('builder' => 'MockBuilder'));
+		Tingle_FormHelper::start_form_for(array(), 'test', array('builder' => 'MockBuilder'));
 		$this->assertEquals('text field', Tingle_FormHelper::text_field('foo'));
 	}
 }

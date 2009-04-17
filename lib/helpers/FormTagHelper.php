@@ -7,22 +7,28 @@ class Tingle_FormTagHelper
 	 * Output tag to start a form.
 	 *
 	 * // Default
-	 * start_form_tag():
-	 *   <form method="post">
+	 * start_form_tag('process.php'):
+	 *   <form action="process.php" method="post">
 	 *
 	 * // Form containing file uploads
-	 * start_form_tag('multipart' => true):
-	 *   <form method="post" enctype="multipart/form-data">
+	 * start_form_tag("process.php", array('multipart' => true)):
+	 *   <form action="process.php" method="post" enctype="multipart/form-data">
 	 *
 	 * // Additional attributes
-	 * start_form_tag('method' => 'get', 'class' => 'search')
-	 *   <form method="get" class="search">
+	 * start_form_tag('process.php', array('method' => 'get', 'class' => 'search'))
+	 *   <form action="process.php" method="get" class="search">
 	 *
 	 * @param array $html_attributes Set of HTML attributes and other options
 	 * return string Form tag
 	 */
-	public static function start_form_tag($html_attributes = array())
+	public static function start_form_tag($action_or_attributes, $html_attributes = array())
 	{
+		if (!is_array($action_or_attributes))
+		{
+			$action_or_attributes = array('action' => $action_or_attributes);
+		}
+
+		$html_attributes = array_merge($action_or_attributes, $html_attributes);
 		if ($html_attributes['multipart'])
 		{
 			$html_attributes['enctype'] = 'multipart/form-data';

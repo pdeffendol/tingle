@@ -6,14 +6,28 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 {
 	public function test_form_start_tag()
 	{
-		$this->assertEquals('<form method="post">', Tingle_FormTagHelper::start_form_tag(), 'Default attributes');
-		$this->assertRegexp('/method="get"/', Tingle_FormTagHelper::start_form_tag(array('method' => 'get')), 'Setting additional attributes');
-		$this->assertRegexp('/enctype="multipart\/form-data"/', Tingle_FormTagHelper::start_form_tag(array('multipart' => true)), 'Setting multipart');
+		$actual = Tingle_FormTagHelper::start_form_tag('test');
+		$matcher = array('tag' => 'form',
+		                 'attributes' => array(
+			                 'action' => 'test',
+			                 'method' => 'post'));
+		$this->assertTag($matcher, $actual, 'Default attributes');
+		
+		$actual = Tingle_FormTagHelper::start_form_tag(array('action' => 'test'));
+		$this->assertTag($matcher, $actual, 'Default attributes in one parameter');
+		
+		$this->assertRegexp('/method="get"/', Tingle_FormTagHelper::start_form_tag('test', array('method' => 'get')), 'Setting additional attributes');
+		$this->assertRegexp('/enctype="multipart\/form-data"/', Tingle_FormTagHelper::start_form_tag('test', array('multipart' => true)), 'Setting multipart');
 	}
 	
 	public function test_form_tag()
 	{
-		$this->assertEquals('<form method="post">', Tingle_FormTagHelper::form_tag(), 'Default attributes');
+		$actual = Tingle_FormTagHelper::form_tag('test');
+		$matcher = array('tag' => 'form',
+		                 'attributes' => array(
+			                 'action' => 'test',
+			                 'method' => 'post'));
+		$this->assertTag($matcher, $actual, 'Default attributes');
 	}
 	
 	public function test_form_end_tag()

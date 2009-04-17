@@ -7,13 +7,19 @@ class Tingle_FormHelper
 {
 	private static $form_builder;
 	
-	public static function start_form_for($model = array(), $html_attributes = array())
+	public static function start_form_for($model = array(), $action_or_attributes, $html_attributes = array())
 	{
 		if (isset(self::$form_builder))
 		{
 			throw new Tingle_RenderingError('Nested form_for not allowed.  (Already inside a form_for block.)');
 		}
 		
+		if (!is_array($action_or_attributes))
+		{
+			$action_or_attributes = array('action' => $action_or_attributes);
+		}
+		$html_attributes = array_merge($action_or_attributes, $html_attributes);
+
 		$builder = $html_attributes['builder'] ? strval($html_attributes['builder']) : new Tingle_FormBuilder($model);
 		unset($html_attributes['builder']);
 
@@ -31,7 +37,7 @@ class Tingle_FormHelper
 		
 		self::$form_builder = $builder;
 		
-		return Tingle_FormTagHelper::start_form_tag($html_attributes);
+		return Tingle_FormTagHelper::start_form_tag($action_or_attributes, $html_attributes);
 	}
 	
 	public static function end_form_for()
