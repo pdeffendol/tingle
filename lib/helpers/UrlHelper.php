@@ -30,6 +30,20 @@ class Tingle_UrlHelper
 	{
 		return (bool)$condition ? self::link_to($label, $url, $html_options) : $label;
 	}
+	
+	
+	/**
+	 * Create an HTML link tag only if its label is not empty, otherwise output
+	 * only the label.  (Which will in effect output nothing.)
+	 * @param string $label String to make hyperlinked
+	 * @param string $url   Destination URL of link
+	 * @param array  $html_options Array of name/value pairs for additional tag attributes
+	 * @return string HTML link tag or nothing
+	 */
+	public static function link_to_if_content($label, $url, $html_options = array())
+	{
+		return self::link_to_if(trim(strval($label)) != '', $label, $url, $html_options);
+	}
 
 
 	/**

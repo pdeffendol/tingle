@@ -25,6 +25,12 @@ class UrlHelperTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('Test', Tingle_UrlHelper::link_to_if(false, 'Test', 'test.html'));
 	}
 	
+	public function test_link_to_if_content()
+	{
+		$this->assertEquals('<a href="test.html">Test</a>', Tingle_UrlHelper::link_to_if_content('Test', 'test.html'), 'Link with a label');
+		$this->assertEquals('', Tingle_UrlHelper::link_to_if_content('', 'test.html'), 'Link without a label');
+	}
+	
 	public function test_link_to_unless_true()
 	{
 		$this->assertEquals('Test', Tingle_UrlHelper::link_to_unless(true, 'Test', 'test.html'));
