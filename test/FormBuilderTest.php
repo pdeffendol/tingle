@@ -18,7 +18,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 			'array_field' => array('foo', 'bar'),
 			'object_field' => $obj
 			);
-		$this->builder = new Tingle_FormBuilder($data);
+		$this->builder = new Tingle_FormBuilder('data', $data);
 	}
 	
 	public function test_checkbox()
@@ -27,7 +27,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'checkbox',
-			                 'name' => 'true_field',
+			                 'name' => 'data[true_field]',
 			                 'value' => '1',
 			                 'checked' => 'checked'));
 		$this->assertTag($matcher, $actual, 'Checkbox should be checked for true value');
@@ -35,12 +35,12 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'hidden',
-			                 'name' => 'true_field',
+			                 'name' => 'data[true_field]',
 			                 'value' => '0'));
 		$this->assertTag($matcher, $actual, 'Checkbox should include hidden field to ensure submitted value');
 		
 		$actual = $this->builder->checkbox('false_field');
-		$matcher['attributes']['name'] = 'false_field';
+		$matcher['attributes']['name'] = 'data[false_field]';
 		$matcher['attributes']['checked'] = null;
 		$this->assertTag($matcher, $actual, 'Checkbox should not be checked for false value');
 	}
@@ -51,7 +51,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'file',
-			                 'name' => 'file'));
+			                 'name' => 'data[file]'));
 		$this->assertTag($matcher, $actual);
 	}
 	
@@ -61,7 +61,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'checkbox',
-			                 'name' => 'array_field[]',
+			                 'name' => 'data[array_field][]',
 			                 'value' => 'foo',
 			                 'checked' => 'checked'));
 		$this->assertTag($matcher, $actual, 'Checkbox should be checked for value in array');
@@ -73,7 +73,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'checkbox',
-			                 'name' => 'array_field[]',
+			                 'name' => 'data[array_field][]',
 			                 'value' => 'bogus',
 			                 'checked' => null));
 		$this->assertTag($matcher, $actual, 'Checkbox should not be checked for value missing from array');
@@ -85,7 +85,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'hidden',
-			                 'name' => 'string_field',
+			                 'name' => 'data[string_field]',
 			                 'value' => 'foo'));
 		$this->assertTag($matcher, $actual);
 	}
@@ -95,7 +95,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$actual = $this->builder->label('string_field', 'String');
 		$matcher = array('tag' => 'label', 
 		                 'attributes' => array(
-		                 'for' => 'string_field'),
+		                 'for' => 'data_string_field'),
 		                 'content' => 'String');
 		$this->assertTag($matcher, $actual);
 	}
@@ -106,7 +106,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'password',
-			                 'name' => 'string_field',
+			                 'name' => 'data[string_field]',
 			                 'value' => 'foo'));
 		$this->assertTag($matcher, $actual);
 	}
@@ -117,7 +117,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 			                 'type' => 'radio',
-			                 'name' => 'string_field',
+			                 'name' => 'data[string_field]',
 			                 'value' => 'foo',
 			                 'checked' => 'checked'));
 		$this->assertTag($matcher, $actual, 'Radio button matching value should be checked');
@@ -126,7 +126,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 			                 'type' => 'radio',
-			                 'name' => 'string_field',
+			                 'name' => 'data[string_field]',
 			                 'value' => 'bar',
 			                 'checked' => null));
 		$this->assertTag($matcher, $actual, 'Radio button not matching value should not be checked');
@@ -137,7 +137,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$actual = $this->builder->select('string_field', array('bar' => 'Bar'));
 		$matcher = array('tag' => 'select', 
 		                 'attributes' => array(
-			                 'name' => 'string_field'),
+			                 'name' => 'data[string_field]'),
 		                 'descendant' => array(
 			                 'tag' => 'option',
 			                   'attributes' => array(
@@ -190,7 +190,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$actual = $this->builder->text_area('string_field');
 		$matcher = array('tag' => 'textarea', 
 		                 'attributes' => array(
-			                 'name' => 'string_field'),
+			                 'name' => 'data[string_field]'),
 			               'content' => 'foo');
 		$this->assertTag($matcher, $actual);
 	}
@@ -201,7 +201,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'text',
-			                 'name' => 'string_field',
+			                 'name' => 'data[string_field]',
 			                 'value' => 'foo'));
 		$this->assertTag($matcher, $actual, 'Should populate value from single-value key');
 
@@ -209,7 +209,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'text',
-			                 'name' => 'bogus_field',
+			                 'name' => 'data[bogus_field]',
 			                 'value' => ''));
 		$this->assertTag($matcher, $actual, 'Should populate empty value from non-existent key');
 
@@ -217,7 +217,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'text',
-			                 'name' => 'hash_field[foo]',
+			                 'name' => 'data[hash_field][foo]',
 			                 'value' => 'bar'));
 		$this->assertTag($matcher, $actual, 'Should populate value from a nested hash key');
 
@@ -225,7 +225,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'text',
-			                 'name' => 'array_field[1]',
+			                 'name' => 'data[array_field][1]',
 			                 'value' => 'bar'));
 		$this->assertTag($matcher, $actual, 'Should populate value from a nested array index');
 
@@ -233,7 +233,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'text',
-			                 'name' => 'object_field[foo]',
+			                 'name' => 'data[object_field][foo]',
 			                 'value' => 'bar'));
 		$this->assertTag($matcher, $actual, 'Should populate value from an object key');
 	}

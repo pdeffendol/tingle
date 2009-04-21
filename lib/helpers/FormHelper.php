@@ -7,7 +7,7 @@ class Tingle_FormHelper
 {
 	private static $form_builder;
 	
-	public static function start_form_for($model = array(), $action_or_attributes, $html_attributes = array())
+	public static function start_form_for($model_name, $model = array(), $action_or_attributes, $html_attributes = array())
 	{
 		if (isset(self::$form_builder))
 		{
@@ -20,14 +20,14 @@ class Tingle_FormHelper
 		}
 		$html_attributes = array_merge($action_or_attributes, $html_attributes);
 
-		$builder = $html_attributes['builder'] ? strval($html_attributes['builder']) : new Tingle_FormBuilder($model);
+		$builder = $html_attributes['builder'] ? strval($html_attributes['builder']) : new Tingle_FormBuilder($model_name, $model);
 		unset($html_attributes['builder']);
 
 		if (!($builder instanceof Tingle_FormBuilder))
 		{
 			if (class_exists($builder))
 			{
-				$builder = new $builder($model);
+				$builder = new $builder($model_name, $model);
 			}
 			else
 			{
@@ -36,7 +36,7 @@ class Tingle_FormHelper
 		}
 		
 		self::$form_builder = $builder;
-		
+
 		return Tingle_FormTagHelper::start_form_tag($action_or_attributes, $html_attributes);
 	}
 	
