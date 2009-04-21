@@ -118,6 +118,20 @@ class Tingle_FormTagHelper
 	{
 		return Tingle_TagHelper::tag('input', array_merge(array('type' => 'image', 'src' => $source), $html_attributes));
 	}
+	
+	
+	/**
+	 * Output a form field label
+	 *
+	 * @param string $name Name of associated field
+	 * @param string $label Content of label
+	 * @param array $html_attributes Set of additional HTML attributes
+	 * return string Label tag
+	 */
+	public static function label_tag($name, $label, $html_attributes = array())
+	{
+		return Tingle_TagHelper::content_tag('label', $label, array_merge(array('for' => self::sanitize_id($name)), $html_attributes));
+	}
 
 
 	/**

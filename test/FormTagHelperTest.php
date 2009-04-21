@@ -92,6 +92,19 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		$this->assertRegexp('/name="foo"/', $actual, "Additional attributes");
 	}
 	
+	public function test_label_tag()
+	{
+		$actual = Tingle_FormTagHelper::label_tag('foo[1]', 'Foo');
+		$matcher = array('tag' => 'label', 
+		                 'content' => 'Foo',
+		                 'attributes' => array(
+			                 'for' => 'foo_1'));
+		$this->assertTag($matcher, $actual, 'Default attributes');
+
+		$actual = Tingle_FormTagHelper::label_tag('foo', 'Foo', array('class' => 'bar'));
+		$this->assertRegexp('/class="bar"/', $actual, "Additional attributes");
+	}
+	
 	public function test_password_field_tag()
 	{
 		$actual = Tingle_FormTagHelper::password_field_tag('foo', 'bar');
