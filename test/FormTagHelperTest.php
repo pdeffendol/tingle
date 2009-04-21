@@ -229,5 +229,38 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		$actual = Tingle_FormTagHelper::options_for_select(array(1 => 'one', 2 => 'two'), array(1, 2));
 		$this->assertEquals("<option value=\"1\" selected=\"selected\">one</option>\n<option value=\"2\" selected=\"selected\">two</option>\n", $actual, 'should mark multiple selected values');
 	}
+	
+	public function test_options_for_select_from_collection_with_arrays()
+	{
+		$array_data = array(
+			array('id' => 1, 'name' => 'one'),
+			array('id' => 2, 'name' => 'two'),
+			);
+			
+		$actual = Tingle_FormTagHelper::options_for_select_from_collection($array_data, 'id', 'name');
+		$this->assertEquals("<option value=\"1\">one</option>\n<option value=\"2\">two</option>\n", $actual, 'should output correct option tags');
+		
+		$actual = Tingle_FormTagHelper::options_for_select_from_collection($array_data, 'id', 'name', 1);
+		$this->assertEquals("<option value=\"1\" selected=\"selected\">one</option>\n<option value=\"2\">two</option>\n", $actual, 'should mark selected values');
+	}
+
+	
+	public function test_options_for_select_from_collection_with_objects()
+	{
+		$obj1 = new StdClass;
+		$obj1->id = 1;
+		$obj1->name = 'one';
+		$obj2 = new StdClass;
+		$obj2->id = 2;
+		$obj2->name = 'two';
+		
+		$obj_data = array($obj1, $obj2);
+			
+		$actual = Tingle_FormTagHelper::options_for_select_from_collection($obj_data, 'id', 'name');
+		$this->assertEquals("<option value=\"1\">one</option>\n<option value=\"2\">two</option>\n", $actual, 'should output correct option tags');
+		
+		$actual = Tingle_FormTagHelper::options_for_select_from_collection($obj_data, 'id', 'name', 1);
+		$this->assertEquals("<option value=\"1\" selected=\"selected\">one</option>\n<option value=\"2\">two</option>\n", $actual, 'should mark selected values');
+	}
 }
 ?>

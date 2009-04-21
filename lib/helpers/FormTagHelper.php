@@ -242,6 +242,37 @@ class Tingle_FormTagHelper
 		
 		return $option_tags;
 	}
+	
+	
+	/**
+	 * Generate a list of <option> tags from a collection of arrays or objects,
+	 * given the array keys or object attributes to use for the <option> label
+	 * and value.
+	 *
+	 * @param array $collection Array of arrays or objects
+	 * @param string $value_field Array key or object attribute from which to obtain option value
+	 * @param string $label_field Array key or object attribute from which to obtain option label
+	 * @param mixed $selected Single value or array of values that indicate keys of
+	 *                        options to mark as selected.
+	 * @return string Set of <option> tags
+	 */
+	public static function options_for_select_from_collection($collection, $value_field, $label_field, $selected = null)
+	{
+		$options = array();
+		foreach ((array)$collection as $item)
+		{
+			if (is_object($item))
+			{
+				$options[$item->$value_field] = $item->$label_field;
+			}
+			else
+			{
+				$options[$item[$value_field]] = $item[$label_field];
+			}
+		}
+
+		return self::options_for_select($options, $selected);
+	}
 
 
 	/**
