@@ -18,7 +18,54 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 			'array_field' => array('foo', 'bar'),
 			'object_field' => $obj
 			);
-		$this->builder = new Tingle_FormBuilder('data', $data);
+		$this->builder = new Tingle_FormBuilder('data', $data, array('action' => 'foo'));
+	}
+	
+	public function test_start()
+	{
+		$result = $this->builder->start();
+		$this->assertType('Tingle_FormBuilder', $result);
+		$matcher = array('tag' => 'form',
+		                 'attributes' => array(
+			                 'method' => 'post',
+			                 'action' => 'foo'));
+		$this->assertTag($matcher, strval($result));
+	}
+	
+	public function test_start_with_attributes()
+	{
+		$result = $this->builder->start(array('action' => 'bar', 'method' => 'get'));
+		$this->assertEquals($this->builder, $result, 'Return value is itself');
+		$matcher = array('tag' => 'form',
+		                 'attributes' => array(
+			                 'method' => 'get',
+			                 'action' => 'bar'));
+		$this->assertTag($matcher, strval($result));
+	}
+	
+	public function test_end()
+	{
+		$result = $this->builder->end();
+		$this->assertEquals($this->builder, $result, 'Return value is itself');
+		$this->assertEquals('</form>', strval($result), 'String value is form end tag');
+	}
+	
+	public function test_string_value()
+	{
+		$this->assertEquals('', strval($this->builder));
+	}
+	
+	public function test_common_calling_convention()
+	{
+		// start() will commonly be called in a template like this:
+		// <?= $form = $this->form_for('foo', $this->foo, ...)->start() ? >
+		$result = strval($form = $this->builder->start());
+		$this->assertEquals($this->builder, $form, '$form gets assigned to builder');
+		$matcher = array('tag' => 'form',
+		                 'attributes' => array(
+			                 'method' => 'post',
+			                 'action' => 'foo'));
+		$this->assertTag($matcher, strval($result), 'String value is form start tag');
 	}
 	
 	public function test_checkbox()

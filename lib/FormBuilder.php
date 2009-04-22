@@ -6,11 +6,15 @@ class Tingle_FormBuilder
 {
 	private $model_name;
 	private $model_data;
+	private $start_tag_attributes;
+	private $status;
 	
-	public function __construct($model_name, $model_data = array())
+	public function __construct($model_name, $model_data, $html_attributes = array())
 	{
 		$this->model_name = $model_name;
 		$this->model_data = $model_data;
+		$this->start_tag_attributes = (array)$html_attributes;
+		$this->status = null;
 	}
 	
 	/**
@@ -42,7 +46,7 @@ class Tingle_FormBuilder
 			}
 			else
 			{
-				$data = null;;
+				$data = null;
 				break;
 			}
 		}
@@ -50,6 +54,51 @@ class Tingle_FormBuilder
 		return $data;
 	}
 	
+	
+	/**
+	 * Obtain the string value of the form, depending on its
+	 * current output status.  This will either return the
+	 * starting or ending <form> tag if start() or end() were
+	 * previously called, respectively.  Otherwise, an empty
+	 * string is returned.
+	 *
+	 * @return string Start or end tag, or empty string
+	 */
+	public function __toString()
+	{
+		switch ($this->status)
+		{
+			case 'start':
+				$text = Tingle_FormTagHelper::start_form_tag($this->start_tag_attributes);
+				break;
+			case 'end':
+				$text = Tingle_FormTagHelper::end_form_tag();
+				break;
+			default:
+				$text = '';
+				break;
+		}
+		
+		$this->status = null;
+		return $text;
+	}
+	
+	
+	public function start($html_attributes = array())
+	{
+		$this->start_tag_attributes = array_merge((array)$this->start_tag_attributes, (array)$html_attributes);
+		$this->status = 'start';
+		return $this;
+	}
+	
+	
+	public function end()
+	{
+		$this->status = 'end';
+		return $this;
+	}
+
+
 	/**
 	 * return string Checkbox HTML
 	 */
