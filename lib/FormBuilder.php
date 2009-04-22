@@ -120,6 +120,20 @@ class Tingle_FormBuilder
 		return Tingle_FormTagHelper::checkbox_tag($this->get_field_name($name), $tag_value, $checked, $html_attributes);
 	}
 
+
+	public function fields_for($model_name, $model_data, $options = array())
+	{
+		$builder = $options['builder'] ? strval($options['builder']) : 'Tingle_FormBuilder';
+		
+		if (!class_exists($builder))
+		{
+			throw new Tingle_RenderingError('Form builder '.$builder.' not found.');
+		}
+
+		return new $builder($model_name, $model_data);
+	}
+	
+	
 	public function file_field($name, $html_attributes = array())
 	{
 		return Tingle_FormTagHelper::file_field_tag($this->get_field_name($name), $html_attributes);

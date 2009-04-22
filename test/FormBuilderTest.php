@@ -92,6 +92,21 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$this->assertTag($matcher, $actual, 'Checkbox should not be checked for false value');
 	}
 	
+	public function test_fields_for()
+	{
+		$data = array('foo' => 'bar');
+		$ff = $this->builder->fields_for('other_data', $data);
+		$this->assertType('Tingle_FormBuilder', $ff, 'Returns FormBuilder');
+		
+		$actual = $ff->text_field('foo');
+		$matcher = array('tag' => 'input', 
+		                 'attributes' => array(
+		                 'type' => 'text',
+			                 'name' => 'other_data[foo]',
+			                 'value' => 'bar'));
+		$this->assertTag($matcher, $actual, 'Produces correct form fields');
+	}
+	
 	public function test_file_field()
 	{
 		$actual = $this->builder->file_field('file');
