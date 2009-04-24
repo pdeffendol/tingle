@@ -123,7 +123,7 @@ class Tingle_FormBuilder
 
 	public function fields_for($model_name, $model_data, $options = array())
 	{
-		$builder = $options['builder'] ? strval($options['builder']) : 'Tingle_FormBuilder';
+		$builder = $options['builder'] ? strval($options['builder']) : get_class($this);
 		
 		if (!class_exists($builder))
 		{

@@ -2,6 +2,8 @@
 require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__).'/../lib/FormBuilder.php';
 
+class TestBuilder extends Tingle_FormBuilder {}
+
 class FormBuilderTest extends PHPUnit_Framework_TestCase
 {
 	protected function setUp()
@@ -19,6 +21,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 			'object_field' => $obj
 			);
 		$this->builder = new Tingle_FormBuilder('data', $data, array('action' => 'foo'));
+		$this->custom_builder = new TestBuilder('data', $data, array('action' => 'foo'));
 	}
 	
 	public function test_start()
@@ -95,8 +98,8 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 	public function test_fields_for()
 	{
 		$data = array('foo' => 'bar');
-		$ff = $this->builder->fields_for('other_data', $data);
-		$this->assertType('Tingle_FormBuilder', $ff, 'Returns FormBuilder');
+		$ff = $this->test_builder->fields_for('other_data', $data);
+		$this->assertType('TestBuilder', $ff, 'Returns builder with same class as caller');
 		
 		$actual = $ff->text_field('foo');
 		$matcher = array('tag' => 'input', 
@@ -105,6 +108,9 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 			                 'name' => 'other_data[foo]',
 			                 'value' => 'bar'));
 		$this->assertTag($matcher, $actual, 'Produces correct form fields');
+		
+		$ff = $this->builder->fields_for('other_data', $data, array('builder', 'TestBuilder'));
+		$this->assertType('TestBuilder', $ff, 'Allows specifying builder class');
 	}
 	
 	public function test_file_field()
