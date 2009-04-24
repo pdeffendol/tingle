@@ -165,7 +165,14 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		                 'attributes' => array(
 		                 'for' => 'data_string_field'),
 		                 'content' => 'String');
-		$this->assertTag($matcher, $actual);
+		$this->assertTag($matcher, $actual, 'Label text specified');
+
+		$actual = $this->builder->label('string_field');
+		$matcher = array('tag' => 'label', 
+		                 'attributes' => array(
+		                 'for' => 'data_string_field'),
+		                 'content' => 'String Field');
+		$this->assertTag($matcher, $actual, 'Default label text');
 	}
 	
 	public function test_password_field()

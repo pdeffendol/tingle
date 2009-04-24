@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/helpers/FormTagHelper.php';
 require_once dirname(__FILE__).'/Exception.php';
+require_once dirname(__FILE__).'/Inflector.php';
 
 class Tingle_FormBuilder
 {
@@ -145,8 +146,9 @@ class Tingle_FormBuilder
 		return Tingle_FormTagHelper::hidden_field_tag($this->get_field_name($name), $value, $html_attributes);
 	}
 
-	public function label($name, $text, $html_attributes = array())
+	public function label($name, $text = null, $html_attributes = array())
 	{
+		if (!$text) $text = Tingle_Inflector::humanize($name);
 		return Tingle_FormTagHelper::label_tag($this->get_field_name($name), $text, $html_attributes);
 	}
 
