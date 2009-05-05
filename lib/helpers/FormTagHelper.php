@@ -160,7 +160,7 @@ class Tingle_FormTagHelper
 	public static function radio_button_tag($name, $value, $checked = false, $html_attributes = array())
 	{
 		$checked = $checked ? "checked" : null;
-		$id = self::sanitize_id($name.'_'.strtolower($value));
+		$id = self::sanitize_id($name.'_'.$value);
 		return Tingle_TagHelper::tag('input', array_merge(array('type' => 'radio', 'name' => $name, 'value' => $value, 'id' => $id, 'checked' => $checked), $html_attributes));
 	}
 

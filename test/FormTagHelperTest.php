@@ -119,13 +119,13 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 	
 	public function test_radio_button_tag()
 	{
-		$actual = Tingle_FormTagHelper::radio_button_tag('passed', 'yes');
+		$actual = Tingle_FormTagHelper::radio_button_tag('passed', 'Yes');
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 			                 'type' => 'radio',
 			                 'name' => 'passed',
-			                 'id' => 'passed_yes',
-			                 'value' => 'yes',
+			                 'id' => 'passed_Yes',
+			                 'value' => 'Yes',
 			                 'checked' => null));
 		$this->assertTag($matcher, $actual, 'Default attributes');
 		
@@ -225,7 +225,7 @@ class FormTagHelperTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('foo', Tingle_FormTagHelper::sanitize_id('foo'), 'Standard name');
 		$this->assertEquals('foo_name', Tingle_FormTagHelper::sanitize_id('foo[name]'), 'Name with subscript');
 		$this->assertEquals('foo', Tingle_FormTagHelper::sanitize_id('foo[]'), 'Name with empty subscript');
-		$this->assertEquals('foo_bar_name', Tingle_FormTagHelper::sanitize_id('foo[bar][name]'), 'Name with multiple subscripts');
+		$this->assertEquals('foo_Bar_name', Tingle_FormTagHelper::sanitize_id('foo[Bar][name]'), 'Name with multiple subscripts');
 	}
 	
 	public function test_options_for_select()
