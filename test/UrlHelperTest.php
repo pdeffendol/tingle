@@ -40,4 +40,16 @@ class UrlHelperTest extends PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals('<a href="test.html">Test</a>', Tingle_UrlHelper::link_to_unless(false, 'Test', 'test.html'));
 	}
+	
+	public function test_mail_to()
+	{
+		$this->assertEquals('<a href="mailto:test@example.com">Test</a>', Tingle_UrlHelper::mail_to('test@example.com', 'Test'), 'Mailto with label');
+		$this->assertEquals('<a href="mailto:test@example.com">test@example.com</a>', Tingle_UrlHelper::mail_to('test@example.com'), 'Mailto without label defaults to address');
+		$this->assertEquals('<a class="test" href="mailto:test@example.com">Test</a>', Tingle_UrlHelper::mail_to('test@example.com', 'Test', array('class' => 'test')), 'Mailto with additional options');
+	}
+	
+	public function test_mail_to_hex_escape()
+	{
+		$this->assertEquals('<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;%74%65%73%74@%65%78%61%6d%70%6c%65.%63%6f%6d">&#x54;&#x65;&#x73;&#x74;</a>', Tingle_UrlHelper::mail_to('test@example.com', 'Test', array('encode' => 'hex')), 'Mailto with hex encoding');
+	}
 }
