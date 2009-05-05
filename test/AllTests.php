@@ -31,6 +31,7 @@ class AllTests
 			'UrlHelperTest',
 			'AssetTagHelperTest',
 			'FormTagHelperTest',
+			'FormBuilderTest',
 			'FormHelperTest');
 		
 		foreach ($tests as $test)
