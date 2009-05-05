@@ -173,6 +173,11 @@ class Tingle_FormBuilder
 
 		return Tingle_FormTagHelper::select_tag($this->get_field_name($name), $option_tags, $html_attributes);
 	}
+	
+	public function submit($value = 'Save', $html_attributes = array())
+	{
+		return Tingle_FormTagHelper::submit_tag($value, $html_attributes);
+	}
 
 	public function text_area($name, $html_attributes = array())
 	{

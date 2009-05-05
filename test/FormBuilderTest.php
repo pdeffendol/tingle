@@ -267,6 +267,24 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$this->assertTag($matcher, $actual, 'prompt does not create an option when a value is chosen');
 	}
 	
+	public function test_submit()
+	{
+		$actual = $this->builder->submit();
+		$matcher = array('tag' => 'input', 
+		                 'attributes' => array(
+			                 'type' => 'submit',
+											 'value' => 'Save',
+											 'name' => null));
+		$this->assertTag($matcher, $actual, 'Default attributes');
+		$this->assertNotContains('id=', $actual, 'No id attribute by default');
+		
+		$actual = $this->builder->submit('Update');
+		$this->assertRegexp('/value="Update"/', $actual, "Setting button label");
+		
+		$actual = $this->builder->submit('Submit', array('class' => 'blah'));
+		$this->assertRegexp('/class="blah"/', $actual, "Additional attributes");
+	}
+	
 	public function test_text_area()
 	{
 		$actual = $this->builder->text_area('string_field');
