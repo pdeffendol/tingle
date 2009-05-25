@@ -15,7 +15,7 @@ class Tingle_TagHelper
 	 * @param bool   $open When set to true, will prevent XHTML closing slash
 	 * @return string Complete HTML tag
 	 */
-	public function tag($name, $html_attributes = array(), $open = false)
+	public static function tag($name, $html_attributes = array(), $open = false)
 	{
 	  return ($name ? '<'.$name.self::tag_attributes($html_attributes).(($open) ? '>' : ' />') : '');
 	}
@@ -29,7 +29,7 @@ class Tingle_TagHelper
 	 * @param array  $options HTML attributes to include within the opening tag
 	 * @return string Complete HTML container
 	 */
-	public function content_tag($name, $content = '', $html_attributes = array())
+	public static function content_tag($name, $content = '', $html_attributes = array())
 	{
 		return ($name ? '<'.$name.self::tag_attributes($html_attributes).'>'.$content.'</'.$name.'>' : '');
 	}
@@ -41,7 +41,7 @@ class Tingle_TagHelper
 	 * @param  string $html HTML string to escape
 	 * @return string Escaped string
 	 */
-	public function escape_once($string)
+	public static function escape_once($string)
 	{
 	  return self::fix_double_escape(htmlspecialchars($string, ENT_COMPAT));
 	}
@@ -53,7 +53,7 @@ class Tingle_TagHelper
 	 * @param  string $escaped HTML string to fix
 	 * @return string fixed escaped string
 	 */
-	public function fix_double_escape($escaped)
+	public static function fix_double_escape($escaped)
 	{
 	  return preg_replace('/&amp;([a-z]+|(#\d+)|(#x[\da-f]+));/i', '&$1;', $escaped);
 	}
@@ -66,7 +66,7 @@ class Tingle_TagHelper
 	 * @param array $options Array of name/value pairs of tag attributes
 	 * @return string HTML options to put inside a tag
 	 */
-	private function tag_attributes($html_attributes = array())
+	private static function tag_attributes($html_attributes = array())
 	{
 	  $html = '';
 	  foreach ($html_attributes as $key => $value)
