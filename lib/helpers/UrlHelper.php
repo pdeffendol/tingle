@@ -13,7 +13,9 @@ class Tingle_UrlHelper
 	 */
 	public static function link_to($label, $url, $html_options = array())
 	{
-		return Tingle_TagHelper::content_tag('a', $label, array_merge($html_options, array('href'=>$url)));
+		$html_options['href'] = $url;
+		$html_options = self::options_for_javascript($html_options);
+		return Tingle_TagHelper::content_tag('a', $label, $html_options);
 	}
 	
 	/**
@@ -125,6 +127,119 @@ class Tingle_UrlHelper
 		{
 			return Tingle_TagHelper::content_tag('a', $label ? $label : $address, array_merge($html_options, array('href' => 'mailto:'.$address.$url_params)));
 		}
+	}
+	
+	
+	/**
+	 * Convert special link options into appropriate Javascript event
+	 * handler code.
+	 *
+	 * The following options are converted and removed from the
+	 * array:
+	 *
+	 *	 confirm - Generates a Javascript confirm dialog containing the provided text
+	 *	 method	 - Causes the link to POST a hidden form instead of making a normal
+	 *						 GET request
+	 *
+	 * @param array $options Set of link options
+	 * @return array Modified set of link options
+	 */
+	private static function options_for_javascript($options)
+	{
+		$confirm = $options['confirm'];
+		$method = $options['method'];
+		$popup = $options['popup'];
+		$href = $options['href'];
+		unset($options['confirm'], $options['method'], $options['popup']);
+
+		if ($popup && $method)
+		{
+			throw new Tingle_RenderingError('Cannot use both popup and method options in a link');
+		}
+		elseif ($confirm && $method)
+		{
+			$options['onclick'] = "if (".self::javascript_function_for_confirm($confirm).") {".self::javascript_function_for_method($method, $href)."} return false;";
+		}
+		elseif ($confirm && $popup)
+		{
+			$options['onclick'] = "if (".self::javascript_function_for_confirm($confirm).") {".self::javascript_function_for_popup($popup)."} return false;";
+		}
+		elseif ($confirm)
+		{
+			$options['onclick'] = "return ".self::javascript_function_for_confirm($confirm).";";
+		}
+		elseif ($method)
+		{
+			$options['onclick'] = self::javascript_function_for_method($method, $href).' return false;';
+		}
+		elseif ($popup)
+		{
+			$options['onclick'] = self::javascript_function_for_popup($popup).' return false;';
+		}
+		
+		return $options;
+	}
+	
+
+	/**
+	 * Generate the Javascript code to handle the "confirm"
+	 * link option.	 
+	 *
+	 * @param string $confirm Text to show in dialog box
+	 * @return string Javascript code 
+	 */
+	private static function javascript_function_for_confirm($confirm)
+	{
+		return "confirm('".self::escape_for_javascript($confirm)."')";
+	}
+	
+	
+	/**
+	 * Generate the Javascript code to handle the "method"
+	 * link option.	 Creates a form and submits it via POST.
+	 *
+	 * @param string $method Value of method option (value doesn't matter)
+	 * @param string $href	 Value of href attribute of link, to which
+	 *											 form will be submitted
+	 * @return string Javascript code
+	 */
+	private static function javascript_function_for_method($method, $href)
+	{
+		$form_action = $href ? "'{$href}'" : 'this.href';
+
+		$js_submit = "var form = document.createElement('form'); form.style.display = 'none'; " .
+			"this.parentNode.appendChild(form); form.method = 'post'; form.action = {$form_action};";
+		$js_submit .= "form.submit();";
+
+		return $js_submit;
+	}
+	
+
+	/**
+	 * Generate the Javascript code to open link in a new window.
+	 *
+	 * @param mixed $popup Array of options to window.open, or just a string value that doesn't matter
+	 * @return string Javascript code
+	 */
+	private static function javascript_function_for_popup($popup)
+	{
+		return is_array($popup) ? "window.open(this.href, '{$popup[0]}', '{$popup[1]}');" : "window.open(this.href);";
+	}
+	
+	
+	/**
+	 * Escape newlines, carriage returns, and quotes for use in a
+	 * JavaScript string.
+	 *
+	 * @param string $string 
+	 * @return string Escaped string
+	 */
+	private static function escape_for_javascript($string)
+	{
+		$javascript = preg_replace('/\r\n|\n|\r/', "\\n", $string);
+		$javascript = preg_replace('/(["\'])/', '\\\\\1', $javascript);
+	
+		return $javascript;
 	}
 }
 ?>
