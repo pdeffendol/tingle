@@ -250,7 +250,7 @@ class Tingle_FormTagHelper
 		    $html_attributes = array('value' => $key);
 		    if (isset($selected_reversed[strval($key)])) $html_attributes['selected'] = 'selected';
 		
-		    $option_tags .= Tingle_TagHelper::content_tag('option', $value, $html_attributes)."\n";
+		    $option_tags .= Tingle_TagHelper::content_tag('option', Tingle_TagHelper::escape_once($value), $html_attributes)."\n";
 		  }
 		}
 		
