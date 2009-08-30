@@ -94,7 +94,7 @@ class Tingle_Template
 		
 		if (!$helper_class)
 		{
-			throw new Tingle_HelperMethodNotDefined($name);
+			throw new Tingle_HelperMethodNotDefined($helper);
 		}
 		
 		if (!$this->_config['active_helpers'][$helper_class])
@@ -375,7 +375,7 @@ class Tingle_Template
 		
 		if (false === ($template_path = $this->template($template)))
 		{
-			throw new Tingle_TemplateNotFoundException('Template '.$template.' not found');
+			throw new Tingle_TemplateNotFoundException($template, $this->get_template_path());
 		}
 		
 		// "Hide" local variables in case we're using extraction
