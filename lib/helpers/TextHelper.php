@@ -36,7 +36,7 @@ class Tingle_TextHelper
 		} 
 		else 
 		{
-			return $string;
+			return $text;
 		}
 	}
 }
