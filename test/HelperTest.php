@@ -1,6 +1,8 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once dirname(__FILE__).'/../lib/Template.php';
+require_once dirname(__FILE__).'/../lib/Tingle.php';
+
+use Tingle\Template;
 
 class TestHelper
 {
@@ -24,7 +26,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
-		$this->tpl = new Tingle_Template;
+		$this->tpl = new Template;
 	}
 	
 	public function test_should_register_helper()
@@ -51,7 +53,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
 	
 	public function test_should_not_register_invalid_helper()
 	{
-		$this->setExpectedException('Tingle_InvalidHelperClass');
+		$this->setExpectedException('Tingle\InvalidHelperClass');
 		$this->tpl->register_helper('ImaginaryHelper');
 	}
 	
@@ -69,7 +71,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
 	
 	public function test_should_handle_bad_helpers()
 	{
-		$this->setExpectedException('Tingle_HelperMethodNotDefined');
+		$this->setExpectedException('Tingle\HelperMethodNotDefined');
 		$this->tpl->bogus_helper();
 	}
 }

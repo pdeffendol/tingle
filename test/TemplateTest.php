@@ -1,14 +1,18 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once dirname(__FILE__).'/../lib/Template.php';
+require_once dirname(__FILE__).'/../lib/Tingle.php';
+
+use Tingle\Template;
 
 class TemplateTest extends PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
-		$this->tpl = new Tingle_Template;
+		try {
+		$this->tpl = new Template;
 		$this->tpl->set_template_path(dirname(__FILE__).'/templates');
 		$this->tpl->data = 'Hello';
+	} catch (Exception $e) { echo $e; print_r(get_declared_classes());}
 	}
 	
 	public function test_should_locate_template()
@@ -23,7 +27,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase
 	
 	public function test_should_fail_on_missing_templates()
 	{
-		$this->setExpectedException('Tingle_TemplateNotFoundException');
+		$this->setExpectedException('Tingle\TemplateNotFoundException');
 		
 		$result = $this->tpl->render('bad_template.tpl');
 	}
@@ -108,7 +112,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase
 	
 	public function test_render_partial_should_fail_on_missing_template()
 	{
-		$this->setExpectedException('Tingle_TemplateNotFoundException');
+		$this->setExpectedException('Tingle\TemplateNotFoundException');
 
 		$this->tpl->partial = 'bad_template.tpl';
 		$result = $this->tpl->render('partial.tpl');

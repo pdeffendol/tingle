@@ -1,4 +1,6 @@
 <?php
+namespace Tingle;
+
 /**
  * Static class for converting between word forms, esp. between
  * singular and plural.
@@ -11,7 +13,7 @@
  * echo Inflector::pluralize('sheep');
  * "sheep"
  */
-class Tingle_Inflector
+class Inflector
 {
 	private static $plural_rules = array();
 	private static $singular_rules = array();
@@ -166,57 +168,57 @@ class Tingle_Inflector
 	}
 }
 
-Tingle_Inflector::singular('/s$/i' , '');
-Tingle_Inflector::singular('/(n)ews$/i' , '\1ews');
-Tingle_Inflector::singular('/([ti])a$/i' , '\1um');
-Tingle_Inflector::singular('/((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i' , '\1\2sis');
-Tingle_Inflector::singular('/(^analy)ses$/i' , '\1sis');
-Tingle_Inflector::singular('/([^f])ves$/i' , '\1fe');
-Tingle_Inflector::singular('/(hive)s$/i' , '\1');
-Tingle_Inflector::singular('/(tive)s$/i' , '\1');
-Tingle_Inflector::singular('/([lr])ves$/i' , '\1f');
-Tingle_Inflector::singular('/([^aeiouy]|qu)ies$/i' , '\1y');
-Tingle_Inflector::singular('/(s)eries$/i' , '\1eries');
-Tingle_Inflector::singular('/(m)ovies$/i' , '\1ovie');
-Tingle_Inflector::singular('/(x|ch|ss|sh)es$/i' , '\1');
-Tingle_Inflector::singular('/([m|l])ice$/i' , '\1ouse');
-Tingle_Inflector::singular('/(bus)es$/i' , '\1');
-Tingle_Inflector::singular('/(o)es$/i' , '\1');
-Tingle_Inflector::singular('/(shoe)s$/i' , '\1');
-Tingle_Inflector::singular('/(cris|ax|test)es$/i' , '\1is');
-Tingle_Inflector::singular('/([octop|vir])i$/i' , '\1us');
-Tingle_Inflector::singular('/(alias|status)es$/i' , '\1');
-Tingle_Inflector::singular('/^(ox)en/i' , '\1');
-Tingle_Inflector::singular('/(vert|ind)ices$/i' , '\1ex');
-Tingle_Inflector::singular('/(matr)ices$/i' , '\1ix');
-Tingle_Inflector::singular('/(quiz)zes$/i' , '\1');
+Inflector::singular('/s$/i' , '');
+Inflector::singular('/(n)ews$/i' , '\1ews');
+Inflector::singular('/([ti])a$/i' , '\1um');
+Inflector::singular('/((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i' , '\1\2sis');
+Inflector::singular('/(^analy)ses$/i' , '\1sis');
+Inflector::singular('/([^f])ves$/i' , '\1fe');
+Inflector::singular('/(hive)s$/i' , '\1');
+Inflector::singular('/(tive)s$/i' , '\1');
+Inflector::singular('/([lr])ves$/i' , '\1f');
+Inflector::singular('/([^aeiouy]|qu)ies$/i' , '\1y');
+Inflector::singular('/(s)eries$/i' , '\1eries');
+Inflector::singular('/(m)ovies$/i' , '\1ovie');
+Inflector::singular('/(x|ch|ss|sh)es$/i' , '\1');
+Inflector::singular('/([m|l])ice$/i' , '\1ouse');
+Inflector::singular('/(bus)es$/i' , '\1');
+Inflector::singular('/(o)es$/i' , '\1');
+Inflector::singular('/(shoe)s$/i' , '\1');
+Inflector::singular('/(cris|ax|test)es$/i' , '\1is');
+Inflector::singular('/([octop|vir])i$/i' , '\1us');
+Inflector::singular('/(alias|status)es$/i' , '\1');
+Inflector::singular('/^(ox)en/i' , '\1');
+Inflector::singular('/(vert|ind)ices$/i' , '\1ex');
+Inflector::singular('/(matr)ices$/i' , '\1ix');
+Inflector::singular('/(quiz)zes$/i' , '\1');
 
-Tingle_Inflector::plural('/$/' , 's');
-Tingle_Inflector::plural('/s$/i' , 's');
-Tingle_Inflector::plural('/(ax|test)is$/i' , '\1es');
-Tingle_Inflector::plural('/(octop|vir)us$/i' , '\1i');
-Tingle_Inflector::plural('/(alias|status)$/i' , '\1es');
-Tingle_Inflector::plural('/(bu)s$/i' , '\1ses');
-Tingle_Inflector::plural('/(buffal|tomat)o$/i' , '\1oes');
-Tingle_Inflector::plural('/([ti])um$/i' , '\1a');
-Tingle_Inflector::plural('/sis$/i' , 'ses');
-Tingle_Inflector::plural('/(?:([^f])fe|([lr])f)$/i' , '\1\2ves');
-Tingle_Inflector::plural('/(hive)$/i' , '\1s');
-Tingle_Inflector::plural('/([^aeiouy]|qu)y$/i' , '\1ies');
-Tingle_Inflector::plural('/([^aeiouy]|qu)ies$/i' , '\1y');
-Tingle_Inflector::plural('/(x|ch|ss|sh)$/i' , '\1es');
-Tingle_Inflector::plural('/(matr|vert|ind)ix|ex$/i' , '\1ices');
-Tingle_Inflector::plural('/([m|l])ouse$/i' , '\1ice');
-Tingle_Inflector::plural('/^(ox)$/i' , '\1en');
-Tingle_Inflector::plural('/(quiz)$/i' , '\1zes');
+Inflector::plural('/$/' , 's');
+Inflector::plural('/s$/i' , 's');
+Inflector::plural('/(ax|test)is$/i' , '\1es');
+Inflector::plural('/(octop|vir)us$/i' , '\1i');
+Inflector::plural('/(alias|status)$/i' , '\1es');
+Inflector::plural('/(bu)s$/i' , '\1ses');
+Inflector::plural('/(buffal|tomat)o$/i' , '\1oes');
+Inflector::plural('/([ti])um$/i' , '\1a');
+Inflector::plural('/sis$/i' , 'ses');
+Inflector::plural('/(?:([^f])fe|([lr])f)$/i' , '\1\2ves');
+Inflector::plural('/(hive)$/i' , '\1s');
+Inflector::plural('/([^aeiouy]|qu)y$/i' , '\1ies');
+Inflector::plural('/([^aeiouy]|qu)ies$/i' , '\1y');
+Inflector::plural('/(x|ch|ss|sh)$/i' , '\1es');
+Inflector::plural('/(matr|vert|ind)ix|ex$/i' , '\1ices');
+Inflector::plural('/([m|l])ouse$/i' , '\1ice');
+Inflector::plural('/^(ox)$/i' , '\1en');
+Inflector::plural('/(quiz)$/i' , '\1zes');
 
-Tingle_Inflector::irregular('person', 'people');
-Tingle_Inflector::irregular('man', 'men');
-Tingle_Inflector::irregular('child', 'children');
-Tingle_Inflector::irregular('sex', 'sexes');
-Tingle_Inflector::irregular('move', 'moves');
+Inflector::irregular('person', 'people');
+Inflector::irregular('man', 'men');
+Inflector::irregular('child', 'children');
+Inflector::irregular('sex', 'sexes');
+Inflector::irregular('move', 'moves');
 
-Tingle_Inflector::uncountable(array('equipment', 'information', 'rice', 
+Inflector::uncountable(array('equipment', 'information', 'rice', 
                              'money', 'species', 'series', 'fish', 
                              'sheep', 'deer', 'elk', 'cattle'));
 ?>

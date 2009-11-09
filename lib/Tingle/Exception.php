@@ -1,10 +1,11 @@
 <?php
+namespace Tingle;
 
-class Tingle_Exception extends Exception
+class Exception extends \Exception
 {
 }
 
-class Tingle_TemplateNotFoundException extends Tingle_Exception
+class TemplateNotFoundException extends Exception
 {
 	private $template;
 	private $template_path;
@@ -21,16 +22,26 @@ class Tingle_TemplateNotFoundException extends Tingle_Exception
 	}
 }
 
-class Tingle_RenderingError extends Tingle_Exception
+class RenderingError extends Exception
 {
 }
 
-class Tingle_InvalidHelperClass extends Tingle_Exception
+class InvalidHelperClass extends Exception
 {
+	private $attempted_class;
 	
+	public function __construct($attempted_class)
+	{
+		$this->attempted_class = $attempted_class;
+	}
+	
+	public function __toString()
+	{
+		return __CLASS__.": '{$this->attempted_class}' is not a helper class";
+	}
 }
 
-class Tingle_HelperMethodNotDefined extends Tingle_Exception
+class HelperMethodNotDefined extends Exception
 {
 	private $helper_name;
 	

@@ -1,7 +1,9 @@
 <?php
+namespace Tingle;
+
 require_once dirname(__FILE__).'/Exception.php';
 
-class Tingle_Template
+class Template
 {
 	protected $_config = array(
 		'template_path'  => array('.'),
@@ -30,8 +32,7 @@ class Tingle_Template
 		
 		foreach ($helpers as $helper)
 		{
-			include_once dirname(__FILE__)."/helpers/{$helper}Helper.php";
-			$this->register_helper("Tingle_{$helper}Helper");
+			$this->register_helper("Tingle\\{$helper}Helper");
 		}
 	}
 	
@@ -46,16 +47,16 @@ class Tingle_Template
 	 *
 	 * $this->helper_method_name($arg1, $arg2);
 	 *
-	 * In the example above, $this is the Tingle_Template object.
+	 * In the example above, $this is the Template object.
 	 */
 	public function register_helper($name)
 	{
 		if (!class_exists($name))
 		{
-			throw new Tingle_InvalidHelperClass;
+			throw new InvalidHelperClass($name);
 		}
 		
-		$helper_info = new ReflectionClass($name);
+		$helper_info = new \ReflectionClass($name);
 		
 		foreach ($helper_info->getMethods() as $method)
 		{
@@ -94,7 +95,7 @@ class Tingle_Template
 		
 		if (!$helper_class)
 		{
-			throw new Tingle_HelperMethodNotDefined($helper);
+			throw new HelperMethodNotDefined($helper);
 		}
 		
 		if (!$this->_config['active_helpers'][$helper_class])
@@ -131,7 +132,7 @@ class Tingle_Template
 	 * Examples:
 	 * 
 	 * <code>
-	 * $tpl = new Tingle_Template;
+	 * $tpl = new Tingle\Template;
 	 *
 	 * // Assign single variable
    * $tpl->assign('var', 'value');
@@ -294,7 +295,7 @@ class Tingle_Template
 			try {
 				return $this->render();
 			}
-			catch (Tingle_Exception $e)
+			catch (Exception $e)
 			{
 				return '';
 			}
@@ -375,7 +376,7 @@ class Tingle_Template
 		
 		if (false === ($template_path = $this->template($template)))
 		{
-			throw new Tingle_TemplateNotFoundException($template, $this->get_template_path());
+			throw new TemplateNotFoundException($template, $this->get_template_path());
 		}
 		
 		// "Hide" local variables in case we're using extraction

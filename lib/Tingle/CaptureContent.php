@@ -1,7 +1,8 @@
 <?php
+namespace Tingle;
 require_once dirname(__FILE__).'/Exception.php';
 
-class Tingle_CaptureContent
+class CaptureContent
 {
 	private $contents;
 	private $prefix = '';
@@ -63,7 +64,7 @@ class Tingle_CaptureContent
 	{
 		if (self::$capture_lock)
 		{
-			throw new Tingle_RenderingError('Nested content_for captures not allowed.  (Already capturing for "'.self::$capture_lock.'")');
+			throw new RenderingError('Nested content_for captures not allowed.  (Already capturing for "'.self::$capture_lock.'")');
 		}
 		$this->capture_mode = $mode;
 		self::$capture_lock = $this->name;
@@ -74,7 +75,7 @@ class Tingle_CaptureContent
 	{
 		if (self::$capture_lock != $this->name)
 		{
-			throw new Tingle_RenderingError('content_for capturing for "'.$this->name.'" not started');
+			throw new RenderingError('content_for capturing for "'.$this->name.'" not started');
 		}
 		
 		$content = ob_get_clean();

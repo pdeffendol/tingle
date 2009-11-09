@@ -1,5 +1,7 @@
 <?php
-class Tingle_DateHelper
+namespace Tingle;
+
+class DateHelper
 {
   public static function format_date($date, $format = DATE_RFC822)
   {

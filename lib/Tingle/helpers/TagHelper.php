@@ -1,5 +1,7 @@
 <?php
-class Tingle_TagHelper
+namespace Tingle;
+
+class TagHelper
 {
 	public static $boolean_attributes = array(
 		'disabled',

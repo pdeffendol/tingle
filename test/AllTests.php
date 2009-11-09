@@ -20,24 +20,24 @@ class AllTests
 		$suite = new PHPUnit_Framework_TestSuite('Tingle');
 
 		$tests = array(
-			'AssignmentTest',
-			'TemplateTest',
-			'LayoutTest',
-			'HelperTest',
-			'CaptureHelperTest',
-			'CaptureContentTest',
-			'TextHelperTest',
-			'TagHelperTest',
-			'UrlHelperTest',
-			'AssetTagHelperTest',
-			'FormTagHelperTest',
-			'FormBuilderTest',
-			'FormHelperTest');
+			'Assignment',
+			'Template',
+			'Layout',
+			'Helper',
+			'CaptureHelper',
+			'CaptureContent',
+			'TextHelper',
+			'TagHelper',
+			'UrlHelper',
+			'AssetTagHelper',
+			'FormTagHelper',
+			'FormBuilder',
+			'FormHelper');
 		
 		foreach ($tests as $test)
 		{
-			include_once dirname(__FILE__)."/{$test}.php";
-			$suite->addTestSuite($test);
+			include_once dirname(__FILE__)."/{$test}Test.php";
+			$suite->addTestSuite($test.'Test');
 		}
  
 		return $suite;

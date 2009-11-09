@@ -1,7 +1,7 @@
 <?php
-require_once dirname(__FILE__).'/TagHelper.php';
+namespace Tingle;
 
-class Tingle_FormTagHelper
+class FormTagHelper
 {
 	/**
 	 * Output tag to start a form.
@@ -35,7 +35,7 @@ class Tingle_FormTagHelper
 			unset($html_attributes['multipart']);
 		}
 
-		return Tingle_TagHelper::tag('form', array_merge(array('method' => 'post'), $html_attributes), true);
+		return TagHelper::tag('form', array_merge(array('method' => 'post'), $html_attributes), true);
 	}
 
 
@@ -74,7 +74,7 @@ class Tingle_FormTagHelper
 	public static function checkbox_tag($name, $value = "1", $checked = false, $html_attributes = array())
 	{
 		$checked = $checked ? "checked" : null;
-		return Tingle_TagHelper::tag('input', array_merge(array('type' => 'checkbox', 'name' => $name, 'value' => $value, 'checked' => $checked, 'id' => self::sanitize_id($name)), $html_attributes));
+		return TagHelper::tag('input', array_merge(array('type' => 'checkbox', 'name' => $name, 'value' => $value, 'checked' => $checked, 'id' => self::sanitize_id($name)), $html_attributes));
 	}
 
 
@@ -116,7 +116,7 @@ class Tingle_FormTagHelper
 	 */
 	public static function image_submit_tag($source, $html_attributes = array())
 	{
-		return Tingle_TagHelper::tag('input', array_merge(array('type' => 'image', 'src' => $source), $html_attributes));
+		return TagHelper::tag('input', array_merge(array('type' => 'image', 'src' => $source), $html_attributes));
 	}
 	
 	
@@ -130,7 +130,7 @@ class Tingle_FormTagHelper
 	 */
 	public static function label_tag($name, $label, $html_attributes = array())
 	{
-		return Tingle_TagHelper::content_tag('label', $label, array_merge(array('for' => self::sanitize_id($name)), $html_attributes));
+		return TagHelper::content_tag('label', $label, array_merge(array('for' => self::sanitize_id($name)), $html_attributes));
 	}
 
 
@@ -161,7 +161,7 @@ class Tingle_FormTagHelper
 	{
 		$checked = $checked ? "checked" : null;
 		$id = self::sanitize_id($name.'_'.$value);
-		return Tingle_TagHelper::tag('input', array_merge(array('type' => 'radio', 'name' => $name, 'value' => $value, 'id' => $id, 'checked' => $checked), $html_attributes));
+		return TagHelper::tag('input', array_merge(array('type' => 'radio', 'name' => $name, 'value' => $value, 'id' => $id, 'checked' => $checked), $html_attributes));
 	}
 
 
@@ -176,7 +176,7 @@ class Tingle_FormTagHelper
 	public static function select_tag($name, $option_tags = null, $html_attributes = array())
 	{
 		$name_attr = ($html_attributes['multiple'] && substr($name, -2, 2) != '[]') ? $name.'[]' : $name;
-		return Tingle_TagHelper::content_tag('select', $option_tags, array_merge(array('name' => $name_attr, 'id' => self::sanitize_id($name)), $html_attributes));
+		return TagHelper::content_tag('select', $option_tags, array_merge(array('name' => $name_attr, 'id' => self::sanitize_id($name)), $html_attributes));
 	}
 
 
@@ -189,7 +189,7 @@ class Tingle_FormTagHelper
 	 */
 	public static function submit_tag($value = 'Save', $html_attributes = array())
 	{
-		return Tingle_TagHelper::tag('input', array_merge(array('type' => 'submit', 'value' => $value), $html_attributes));
+		return TagHelper::tag('input', array_merge(array('type' => 'submit', 'value' => $value), $html_attributes));
 	}
 
 
@@ -203,7 +203,7 @@ class Tingle_FormTagHelper
 	 */
 	public static function text_area_tag($name, $content = null, $html_attributes = array())
 	{
-		return Tingle_TagHelper::content_tag('textarea', htmlspecialchars($content), array_merge(array('name' => $name, 'id' => self::sanitize_id($name)), $html_attributes));
+		return TagHelper::content_tag('textarea', htmlspecialchars($content), array_merge(array('name' => $name, 'id' => self::sanitize_id($name)), $html_attributes));
 	}
 
 
@@ -217,7 +217,7 @@ class Tingle_FormTagHelper
 	 */
 	public static function text_field_tag($name, $value = null, $html_attributes = array())
 	{
-		return Tingle_TagHelper::tag('input', array_merge(array('type' => 'text', 'name' => $name, 'value' => $value, 'id' => self::sanitize_id($name)), $html_attributes));
+		return TagHelper::tag('input', array_merge(array('type' => 'text', 'name' => $name, 'value' => $value, 'id' => self::sanitize_id($name)), $html_attributes));
 	}
 	
 	
@@ -243,14 +243,14 @@ class Tingle_FormTagHelper
 		{
 		  if (is_array($value))
 		  {
-		    $option_tags .= Tingle_TagHelper::content_tag('optgroup', self::options_for_select($value, $selected), array('label' => $key))."\n";
+		    $option_tags .= TagHelper::content_tag('optgroup', self::options_for_select($value, $selected), array('label' => $key))."\n";
 		  }
 		  else
 		  {
 		    $html_attributes = array('value' => $key);
 		    if (isset($selected_reversed[strval($key)])) $html_attributes['selected'] = 'selected';
 		
-		    $option_tags .= Tingle_TagHelper::content_tag('option', Tingle_TagHelper::escape_once($value), $html_attributes)."\n";
+		    $option_tags .= TagHelper::content_tag('option', TagHelper::escape_once($value), $html_attributes)."\n";
 		  }
 		}
 		

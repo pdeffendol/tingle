@@ -1,12 +1,14 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once dirname(__FILE__).'/../lib/Template.php';
+require_once dirname(__FILE__).'/../lib/Tingle.php';
+
+use Tingle\Template;
 
 class AssignmentTest extends PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
-		$this->tpl = new Tingle_Template;	
+		$this->tpl = new Template;	
 	}
 	
 	public function test_should_start_with_no_assignments()

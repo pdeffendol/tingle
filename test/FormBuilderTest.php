@@ -1,8 +1,10 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once dirname(__FILE__).'/../lib/FormBuilder.php';
+require_once dirname(__FILE__).'/../lib/Tingle.php';
 
-class TestBuilder extends Tingle_FormBuilder {}
+use Tingle\FormBuilder;
+
+class TestBuilder extends FormBuilder {}
 
 class FormBuilderTest extends PHPUnit_Framework_TestCase
 {
@@ -20,14 +22,14 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 			'array_field' => array('foo', 'bar'),
 			'object_field' => $obj
 			);
-		$this->builder = new Tingle_FormBuilder('data', $data, array('action' => 'foo'));
+		$this->builder = new FormBuilder('data', $data, array('action' => 'foo'));
 		$this->custom_builder = new TestBuilder('data', $data, array('action' => 'foo'));
 	}
 	
 	public function test_start()
 	{
 		$result = $this->builder->start();
-		$this->assertType('Tingle_FormBuilder', $result);
+		$this->assertTrue($result instanceof FormBuilder);
 		$matcher = array('tag' => 'form',
 		                 'attributes' => array(
 			                 'method' => 'post',

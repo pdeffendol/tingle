@@ -1,9 +1,7 @@
 <?php
-require_once dirname(__FILE__).'/FormTagHelper.php';
-require_once dirname(__FILE__).'/../FormBuilder.php';
-require_once dirname(__FILE__).'/../Exception.php';
+namespace Tingle;
 
-class Tingle_FormHelper
+class FormHelper
 {
 	private static $forms = array();
 	
@@ -39,12 +37,12 @@ class Tingle_FormHelper
 	{
 		if (!isset(self::$forms[$model_name]))
 		{
-			$builder = $html_attributes['builder'] ? strval($html_attributes['builder']) : 'Tingle_FormBuilder';
+			$builder = $html_attributes['builder'] ? strval($html_attributes['builder']) : '\\'.__NAMESPACE__.'\\FormBuilder';
 			unset($html_attributes['builder']);
 			
 			if (!class_exists($builder))
 			{
-				throw new Tingle_RenderingError('Form builder '.$builder.' not found.');
+				throw new RenderingError('Form builder '.$builder.' not found.');
 			}
 
 			self::$forms[$model_name] = new $builder($model_name, $model_data, $html_attributes);

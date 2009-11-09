@@ -1,7 +1,7 @@
 <?php
-require_once dirname(__FILE__).'/../CaptureContent.php';
+namespace Tingle;
 
-class Tingle_CaptureHelper
+class CaptureHelper
 {
 	private static $contents = array();
 	
@@ -24,13 +24,13 @@ class Tingle_CaptureHelper
 	 * </code>
 	 *
 	 * @param string $name Name of content
-	 * @return object New or existing Tingle_Helper_Capture_Content object
+	 * @return object New or existing Helper_Capture_Content object
 	 */
 	public static function content_for($name)
 	{
 		if (!isset(self::$contents[$name]))
 		{
-			self::$contents[$name] = new Tingle_CaptureContent($name);
+			self::$contents[$name] = new CaptureContent($name);
 		}
 		
 		return self::$contents[$name];

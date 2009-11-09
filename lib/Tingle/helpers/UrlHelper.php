@@ -1,7 +1,7 @@
 <?php
-require_once dirname(__FILE__).'/TagHelper.php';
+namespace Tingle;
 
-class Tingle_UrlHelper
+class UrlHelper
 {
 	/**
 	 * Create an HTML link tag.
@@ -15,7 +15,7 @@ class Tingle_UrlHelper
 	{
 		$html_options['href'] = $url;
 		$html_options = self::options_for_javascript($html_options);
-		return Tingle_TagHelper::content_tag('a', $label, $html_options);
+		return TagHelper::content_tag('a', $label, $html_options);
 	}
 	
 	/**
@@ -121,11 +121,11 @@ class Tingle_UrlHelper
 			}
 
 			$mailto = "&#109;&#97;&#105;&#108;&#116;&#111;&#58;";
-			return Tingle_TagHelper::content_tag('a', $label_encoded, array_merge($html_options, array('href' => $mailto.$address_encoded.$url_params)));
+			return TagHelper::content_tag('a', $label_encoded, array_merge($html_options, array('href' => $mailto.$address_encoded.$url_params)));
 		}
 		else
 		{
-			return Tingle_TagHelper::content_tag('a', $label ? $label : $address, array_merge($html_options, array('href' => 'mailto:'.$address.$url_params)));
+			return TagHelper::content_tag('a', $label ? $label : $address, array_merge($html_options, array('href' => 'mailto:'.$address.$url_params)));
 		}
 	}
 	
@@ -154,7 +154,7 @@ class Tingle_UrlHelper
 
 		if ($popup && $method)
 		{
-			throw new Tingle_RenderingError('Cannot use both popup and method options in a link');
+			throw new RenderingError('Cannot use both popup and method options in a link');
 		}
 		elseif ($confirm && $method)
 		{
