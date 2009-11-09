@@ -39,3 +39,8 @@ content of your view template will be inserted into the layout at the point(s)
 you specify. This avoids the problem presented by other templating systems in
 which you must split your layouts into a "header" template and a "footer"
 template, and remember to include them in each of your views.
+
+h3. Usage
+
+# Drop the Tingle library into your project.  (You can also get away with only the lib/ directory.)
+# "require" lib/init.php in your PHP script.
