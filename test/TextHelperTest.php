@@ -28,5 +28,52 @@ class TextHelperTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('This text!', Tingle_TextHelper::truncate($text, 12, '!'), 'Different replacement text');
 		$this->assertEquals('This te...', Tingle_TextHelper::truncate($text, 10, '...', true), 'Break words');
 	}
+	
+	public function test_cycle_with_one_value()
+	{
+		$this->assertEquals('only', Tingle_TextHelper::cycle('only'), 'First call returns value');
+		$this->assertEquals('only', Tingle_TextHelper::cycle('only'), 'Second call returns same value');
+	}
+	
+	public function test_cycle_with_multiple_values()
+	{
+		$this->assertEquals('one', Tingle_TextHelper::cycle('one', 'two'), 'First call returns first value');
+		$this->assertEquals('two', Tingle_TextHelper::cycle('one', 'two'), 'Second call returns second value');
+		$this->assertEquals('one', Tingle_TextHelper::cycle('one', 'two'), 'Third call returns first value');
+	}
+	
+	public function test_changing_values_creates_new_cycle()
+	{
+		$throwaway = Tingle_TextHelper::cycle('one', 'two');
+		$this->assertEquals('first', Tingle_TextHelper::cycle('first', 'second'));
+	}
+	
+	public function test_named_cycle()
+	{
+		$this->assertEquals('only', Tingle_TextHelper::cycle('only', array('name' => 'mine')), 'First call returns value');
+		$this->assertEquals('only', Tingle_TextHelper::cycle('only', array('name' => 'mine')), 'Second call returns same value');
+	}
+	
+	public function test_named_cycle_concurrency()
+	{
+		$throwaway = Tingle_TextHelper::cycle('only', array('name' => 'mine'));
+		$this->assertEquals('one', Tingle_TextHelper::cycle('one', 'two', array('name' => 'numbers')));
+		$this->assertEquals('only', Tingle_TextHelper::cycle('only', array('name' => 'mine')));
+		$this->assertEquals('two', Tingle_TextHelper::cycle('one', 'two', array('name' => 'numbers')));
+	}
+	
+	public function test_reset_cycle_default()
+	{
+		$throwaway = Tingle_TextHelper::cycle('one', 'two');
+		Tingle_TextHelper::reset_cycle();
+		$this->assertEquals('one', Tingle_TextHelper::cycle('one', 'two'));
+	}
+	
+	public function test_reset_cycle_named()
+	{
+		$throwaway = Tingle_TextHelper::cycle('one', 'two', array('name' => 'numbers'));
+		Tingle_TextHelper::reset_cycle('numbers');
+		$this->assertEquals('one', Tingle_TextHelper::cycle('one', 'two', array('name' => 'numbers')));
+	}
 }
 ?>
