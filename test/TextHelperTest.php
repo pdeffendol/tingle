@@ -30,5 +30,52 @@ class TextHelperTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('This text!', TextHelper::truncate($text, 12, '!'), 'Different replacement text');
 		$this->assertEquals('This te...', TextHelper::truncate($text, 10, '...', true), 'Break words');
 	}
+	
+	public function test_cycle_with_one_value()
+	{
+		$this->assertEquals('only', TextHelper::cycle('only'), 'First call returns value');
+		$this->assertEquals('only', TextHelper::cycle('only'), 'Second call returns same value');
+	}
+	
+	public function test_cycle_with_multiple_values()
+	{
+		$this->assertEquals('one', TextHelper::cycle('one', 'two'), 'First call returns first value');
+		$this->assertEquals('two', TextHelper::cycle('one', 'two'), 'Second call returns second value');
+		$this->assertEquals('one', TextHelper::cycle('one', 'two'), 'Third call returns first value');
+	}
+	
+	public function test_changing_values_creates_new_cycle()
+	{
+		$throwaway = TextHelper::cycle('one', 'two');
+		$this->assertEquals('first', TextHelper::cycle('first', 'second'));
+	}
+	
+	public function test_named_cycle()
+	{
+		$this->assertEquals('only', TextHelper::cycle('only', array('name' => 'mine')), 'First call returns value');
+		$this->assertEquals('only', TextHelper::cycle('only', array('name' => 'mine')), 'Second call returns same value');
+	}
+	
+	public function test_named_cycle_concurrency()
+	{
+		$throwaway = TextHelper::cycle('only', array('name' => 'mine'));
+		$this->assertEquals('one', TextHelper::cycle('one', 'two', array('name' => 'numbers')));
+		$this->assertEquals('only', TextHelper::cycle('only', array('name' => 'mine')));
+		$this->assertEquals('two', TextHelper::cycle('one', 'two', array('name' => 'numbers')));
+	}
+	
+	public function test_reset_cycle_default()
+	{
+		$throwaway = TextHelper::cycle('one', 'two');
+		TextHelper::reset_cycle();
+		$this->assertEquals('one', TextHelper::cycle('one', 'two'));
+	}
+	
+	public function test_reset_cycle_named()
+	{
+		$throwaway = TextHelper::cycle('one', 'two', array('name' => 'numbers'));
+		TextHelper::reset_cycle('numbers');
+		$this->assertEquals('one', TextHelper::cycle('one', 'two', array('name' => 'numbers')));
+	}
 }
 ?>
