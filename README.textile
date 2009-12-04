@@ -44,4 +44,4 @@ h3. Usage
 
 # Drop the Tingle library into your project.  (You can also get away with only 
   the lib/ directory.)
-# "require" lib/init.php in your PHP script.
+# "require" lib/Tingle.php in your PHP script.
