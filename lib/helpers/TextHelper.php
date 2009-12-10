@@ -73,7 +73,7 @@ class Tingle_TextHelper
 	public static function current_cycle($name = 'default')
 	{
 		$cycle = self::get_cycle($name);
-		return $cycle ? $cycle->current_value() : nil;
+		return $cycle ? $cycle->current_value() : null;
 	}
 	
 	public static function reset_cycle($name = 'default')
