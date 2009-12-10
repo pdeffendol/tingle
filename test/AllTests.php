@@ -26,13 +26,14 @@ class AllTests
 			'Helper',
 			'CaptureHelper',
 			'CaptureContent',
-			'TextHelper',
-			'TagHelper',
-			'UrlHelper',
 			'AssetTagHelper',
-			'FormTagHelper',
+			'DateHelper',
+			'FormHelper',
 			'FormBuilder',
-			'FormHelper');
+			'FormTagHelper',
+			'TagHelper',
+			'TextHelper',
+			'UrlHelper');
 		
 		foreach ($tests as $test)
 		{
