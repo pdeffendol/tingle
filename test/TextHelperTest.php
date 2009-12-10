@@ -77,5 +77,22 @@ class TextHelperTest extends PHPUnit_Framework_TestCase
 		TextHelper::reset_cycle('numbers');
 		$this->assertEquals('one', TextHelper::cycle('one', 'two', array('name' => 'numbers')));
 	}
+	
+	public function test_current_cycle_default()
+	{
+		$throwaway = TextHelper::cycle('one', 'two');
+		$this->assertEquals('one', TextHelper::current_cycle());
+	}
+	
+	public function test_current_cycle_named()
+	{
+		$throwaway = TextHelper::cycle('one', 'two', array('name' => 'numbers'));
+		$this->assertEquals('one', TextHelper::current_cycle('numbers'));
+	}
+	
+	public function test_current_cycle_invalid()
+	{
+		$this->assertNull(TextHelper::current_cycle('invalid'));
+	}
 }
 ?>
