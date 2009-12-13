@@ -22,12 +22,11 @@ function register_autoloader()
 
 function autoload($class)
 {
-	if (substr($class, 0, strlen(__NAMESPACE__)) != __NAMESPACE__)
-  {
+	if (!preg_match('#^\\\\?'.__NAMESPACE__.'\\\\(.*)#', $class, $matches))
+	{
     return;
   }
-
-	$namespaced_class = preg_replace('#^Tingle\\\\#', '', $class);
+	$namespaced_class = $matches[1];
 	
 	foreach (array('', '/helpers') as $path)
 	{
