@@ -99,19 +99,18 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 	
 	public function test_fields_for()
 	{
-		$data = array('foo' => 'bar');
-		$ff = $this->builder->fields_for('other_data', $data);
+		$ff = $this->builder->fields_for('hash_field');
 		$this->assertType(get_class($this->builder), $ff, 'Returns builder with same class as caller');
 		
 		$actual = $ff->text_field('foo');
 		$matcher = array('tag' => 'input', 
 		                 'attributes' => array(
 		                 'type' => 'text',
-			                 'name' => 'other_data[foo]',
+			                 'name' => 'data[hash_field][foo]',
 			                 'value' => 'bar'));
 		$this->assertTag($matcher, $actual, 'Produces correct form fields');
 		
-		$ff = $this->builder->fields_for('other_data', $data, array('builder' => 'TestBuilder'));
+		$ff = $this->builder->fields_for('hash_field', array('builder' => 'TestBuilder'));
 		$this->assertType('TestBuilder', $ff, 'Allows specifying builder class');
 	}
 	

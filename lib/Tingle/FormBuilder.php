@@ -124,7 +124,7 @@ class FormBuilder
 	}
 
 
-	public function fields_for($model_name, $model_data, $options = array())
+	public function fields_for($model_name, $options = array())
 	{
 		$builder = $options['builder'] ? strval($options['builder']) : get_class($this);
 		
@@ -133,7 +133,7 @@ class FormBuilder
 			throw new RenderingError('Form builder '.$builder.' not found.');
 		}
 
-		return new $builder($model_name, $model_data);
+		return new $builder($this->get_field_name($model_name), $this->get_model_data($model_name));
 	}
 	
 	
