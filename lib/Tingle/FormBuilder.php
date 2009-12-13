@@ -1,10 +1,6 @@
 <?php
 namespace Tingle;
 
-require_once dirname(__FILE__).'/helpers/FormTagHelper.php';
-require_once dirname(__FILE__).'/Exception.php';
-require_once dirname(__FILE__).'/Inflector.php';
-
 class FormBuilder
 {
 	private $model_name;

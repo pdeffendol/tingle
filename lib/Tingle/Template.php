@@ -1,8 +1,6 @@
 <?php
 namespace Tingle;
 
-require_once dirname(__FILE__).'/Exception.php';
-
 class Template
 {
 	protected $_config = array(
