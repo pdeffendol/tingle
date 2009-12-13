@@ -27,7 +27,11 @@ class FormHelper
 	 * <?php= $form = $this->form_for('user', $this->user, array('action' => '/blah'))->start() ?>
 	 * // form content
 	 * <?php= $this->form_for('user')->end() ?>
-	 * 
+	 *
+	 * If you want to generate fields for a second data model when you have already started a
+	 * form, then just avoid calling the start() and end() methods for the inner call to
+	 * form_for.
+	 *
 	 * @param string $model_name Name of model, used as prefix on form field names
 	 * @param string $model_data Array or object holding model data for populating fields (optional)
 	 * @param array  $options    Array of options for creating form or HTML attributes of <form> tag
