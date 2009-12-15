@@ -26,7 +26,7 @@ class Template
 	 */
 	private function register_bundled_helpers()
 	{
-		$helpers = array('AssetTag', 'Capture', 'Date', 'Form', 'FormTag', 'Tag', 'Text', 'Url');
+		$helpers = array('AssetTag', 'Capture', 'Date', 'Form', 'FormTag', 'Javascript', 'Tag', 'Text', 'Url');
 		
 		foreach ($helpers as $helper)
 		{
