@@ -100,7 +100,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 	public function test_fields_for()
 	{
 		$ff = $this->builder->fields_for('hash_field');
-		$this->assertType(get_class($this->builder), $ff, 'Returns builder with same class as caller');
+		$this->assertInstanceOf(get_class($this->builder), $ff, 'Returns builder with same class as caller');
 		
 		$actual = $ff->text_field('foo');
 		$matcher = array('tag' => 'input', 
@@ -111,7 +111,7 @@ class FormBuilderTest extends PHPUnit_Framework_TestCase
 		$this->assertTag($matcher, $actual, 'Produces correct form fields');
 		
 		$ff = $this->builder->fields_for('hash_field', array('builder' => 'TestBuilder'));
-		$this->assertType('TestBuilder', $ff, 'Allows specifying builder class');
+		$this->assertInstanceOf('TestBuilder', $ff, 'Allows specifying builder class');
 	}
 	
 	public function test_file_field()
