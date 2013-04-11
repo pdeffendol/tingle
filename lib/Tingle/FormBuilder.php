@@ -1,6 +1,9 @@
 <?php
 namespace Tingle;
 
+use Tingle\Helper\FormTagHelper;
+use Tingle\Exception\RenderingError;
+
 class FormBuilder
 {
 	private $model_name;
@@ -35,11 +38,11 @@ class FormBuilder
 		$data = $this->model_data;
 		foreach ($keys as $key)
 		{
-			if (is_array($data))
+			if (is_array($data) && isset($data[$key]))
 			{
 				$data = $data[$key];
 			}
-			elseif (is_object($data))
+			elseif (is_object($data) && isset($data->$key))
 			{
 				$data = $data->$key;
 			}
@@ -122,7 +125,7 @@ class FormBuilder
 
 	public function fields_for($model_name, $options = array())
 	{
-		$builder = $options['builder'] ? strval($options['builder']) : get_class($this);
+		$builder = isset($options['builder']) ? strval($options['builder']) : get_class($this);
 		
 		if (!class_exists($builder))
 		{
@@ -197,6 +200,10 @@ class FormBuilder
 			$subkeys = substr($name, $pos);
 			$name = substr($name, 0, $pos);
 		}
+		else
+		{
+			$subkeys = null;
+		}
 		
 		return $this->model_name.'['.$name.']'.$subkeys;
 	}
@@ -209,12 +216,12 @@ class FormBuilder
 	 */
 	protected function add_default_select_options($option_tags, $options, $value = null)
 	{
-		if ($options['include_blank'])
+		if (isset($options['include_blank']) && $options['include_blank'])
 		{
 			$option_tags = '<option value="">'.(is_string($options['include_blank']) ? $options['include_blank'] : '').'</option>' . $option_tags;
 		}
 
-		if ($options['prompt'] && !$value)
+		if (isset($options['prompt']) && $options['prompt'] && !$value)
 		{
 			$option_tags = '<option value="">'.(is_string($options['prompt']) ? $options['prompt'] : 'Select one...').'</option>' . $option_tags;
 		}

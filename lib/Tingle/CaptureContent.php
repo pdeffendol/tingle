@@ -1,6 +1,8 @@
 <?php
 namespace Tingle;
 
+use Tingle\Exception\RenderingError;
+
 class CaptureContent
 {
 	private $contents;

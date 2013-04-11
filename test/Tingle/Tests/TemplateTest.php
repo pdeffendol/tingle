@@ -1,0 +1,120 @@
+<?php
+namespace Tingle\Tests;
+
+use Tingle\Template;
+
+class TemplateTest extends BaseTest
+{
+	protected function setUp()
+	{
+		try {
+		$this->tpl = new Template;
+		$this->tpl->set_template_path($this->getTemplatePath());
+		$this->tpl->data = 'Hello';
+	} catch (Exception $e) { echo $e; print_r(get_declared_classes());}
+	}
+	
+	public function test_should_locate_template()
+	{
+		$this->assertEquals($this->getTemplatePath().'/basic.tpl', $this->tpl->template('basic.tpl'));
+	}
+	
+	public function test_should_not_locate_missing_template()
+	{
+		$this->assertFalse($this->tpl->template('bad_template.tpl'));
+	}
+	
+	public function test_should_fail_on_missing_templates()
+	{
+		$this->setExpectedException('Tingle\Exception\TemplateNotFound');
+		
+		$result = $this->tpl->render('bad_template.tpl');
+	}
+	
+	public function test_should_locate_templates_in_folders()
+	{
+		$this->assertEquals($this->getTemplatePath().'/more/basic.tpl', $this->tpl->template('more/basic.tpl'));
+	}
+
+	public function test_should_not_allow_templates_outside_path()
+	{
+		$this->tpl->set_template_path($this->getTemplatePath().'/more');
+		
+		// Make sure template is readable by other means
+		$this->assertTrue(file_exists($this->getTemplatePath().'/more/../basic.tpl'));
+		
+		// Tingle should not allow this template to be rendered
+		$this->assertFalse($this->tpl->template('../basic.tpl'));
+	}
+	
+	public function test_should_set_default_template_path_to_current_dir()
+	{
+		$oldcwd = getcwd();
+		chdir($this->getTemplatePath());
+		$this->tpl->set_template_path(null);
+		$this->assertEquals($this->getTemplatePath().'/basic.tpl', $this->tpl->template('basic.tpl'));
+		chdir($oldcwd);
+	}
+	
+	public function test_should_render_template()
+	{
+		$this->assertEquals('Data: Hello', $this->tpl->render('basic.tpl'));
+	}
+	
+	public function test_should_allow_setting_template_before_render()
+	{
+		$this->tpl->set_template('basic.tpl');
+		$this->assertEquals('Data: Hello', $this->tpl->render());
+	}
+	
+	public function test_should_cast_to_string()
+	{
+		$this->tpl->set_template('basic.tpl');
+		$this->assertEquals('Data: Hello', strval($this->tpl));
+	}
+	
+	public function test_should_cast_to_empty_string_without_template()
+	{
+		$this->assertEquals('', strval($this->tpl));
+	}
+	
+	public function test_should_allow_extracted_variables()
+	{
+		$this->tpl->set_extract_vars(true);
+		$this->assertEquals('Data: Hello', $this->tpl->render('extracted.tpl'));
+	}
+	
+	public function test_should_not_extract_configuration()
+	{
+		$this->tpl->set_extract_vars(true);
+		$this->assertEquals('something: [Hello] empty: []', @$this->tpl->render('extracted_no_config.tpl'));
+	}
+	
+	public function test_render_partial()
+	{
+		$this->tpl->partial = 'basic.tpl';
+		$this->assertEquals('Data: Hello', $this->tpl->render('partial.tpl'));
+	}
+	
+	public function test_render_partial_with_locals()
+	{
+		$this->tpl->partial = 'extracted.tpl';
+		$this->assertEquals('Data: Goodbye', $this->tpl->render('partial_with_locals.tpl'), 'Locals are available in template as plain variables');
+		
+		$this->tpl->partial = 'basic.tpl';
+		$this->assertEquals('Data: Hello', $this->tpl->render('partial_with_locals.tpl'), 'Locals do not override template variables');
+
+		$this->tpl->partial = 'extracted.tpl';
+		$this->tpl->set_extract_vars();
+		$this->assertEquals('Data: Goodbye', $this->tpl->render('partial_with_locals.tpl'), 'Locals override extracted template variables');
+	}
+	
+	public function test_render_partial_should_fail_on_missing_template()
+	{
+		$this->setExpectedException('Tingle\Exception\TemplateNotFound');
+
+		$this->tpl->partial = 'bad_template.tpl';
+		$result = $this->tpl->render('partial.tpl');
+	}
+}
+?>

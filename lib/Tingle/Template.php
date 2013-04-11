@@ -1,6 +1,10 @@
 <?php
 namespace Tingle;
 
+use Tingle\Exception\InvalidHelperClass;
+use Tingle\Exception\TemplateNotFound;
+use Tingle\Exception\HelperMethodNotDefined;
+
 class Template
 {
 	protected $_config = array(
@@ -30,7 +34,7 @@ class Template
 		
 		foreach ($helpers as $helper)
 		{
-			$this->register_helper("Tingle\\{$helper}Helper");
+			$this->register_helper("Tingle\\Helper\\{$helper}Helper");
 		}
 	}
 	
@@ -89,14 +93,14 @@ class Template
 	 */
 	public function __call($helper, $args)
 	{
-		$helper_class = $this->_config['helpers'][$helper];
+		$helper_class = isset($this->_config['helpers'][$helper]) ? $this->_config['helpers'][$helper] : null;
 		
 		if (!$helper_class)
 		{
 			throw new HelperMethodNotDefined($helper);
 		}
 		
-		if (!$this->_config['active_helpers'][$helper_class])
+		if (!isset($this->_config['active_helpers'][$helper_class]))
 		{
 			$this->_config['active_helpers'][$helper_class] = new $helper_class($this);
 		}
@@ -374,7 +378,7 @@ class Template
 		
 		if (false === ($template_path = $this->template($template)))
 		{
-			throw new TemplateNotFoundException($template, $this->get_template_path());
+			throw new TemplateNotFound($template, $this->get_template_path());
 		}
 		
 		// "Hide" local variables in case we're using extraction
