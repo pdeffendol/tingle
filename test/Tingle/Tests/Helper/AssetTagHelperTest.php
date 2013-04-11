@@ -76,4 +76,3 @@ class AssetTagHelperTest extends BaseTest
         $this->assertEquals('<link rel="alternate" href="feed.rss" type="application/rss+xml" title="My Feed" />', AssetTagHelper::feed_link_tag('feed.rss', 'rss', array('title' => 'My Feed')));
     }
 }
-?>

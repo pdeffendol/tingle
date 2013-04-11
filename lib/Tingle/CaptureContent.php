@@ -25,26 +25,28 @@ class CaptureContent
     public function set_prefix($prefix)
     {
         $this->prefix = $prefix;
+
         return $this;
     }
 
     public function set_suffix($suffix)
     {
         $this->suffix = $suffix;
+
         return $this;
     }
 
     public function set_separator($separator)
     {
         $this->separator = $separator;
+
         return $this;
     }
 
     public function __toString()
     {
         $result = '';
-        if (count($this->contents) > 0)
-        {
+        if (count($this->contents) > 0) {
             $result = $this->prefix.implode($this->separator, $this->contents).$this->suffix;
         }
 
@@ -63,8 +65,7 @@ class CaptureContent
 
     public function start($mode = self::SET)
     {
-        if (self::$capture_lock)
-        {
+        if (self::$capture_lock) {
             throw new RenderingError('Nested content_for captures not allowed.  (Already capturing for "'.self::$capture_lock.'")');
         }
         $this->capture_mode = $mode;
@@ -74,22 +75,17 @@ class CaptureContent
 
     public function end()
     {
-        if (self::$capture_lock != $this->name)
-        {
+        if (self::$capture_lock != $this->name) {
             throw new RenderingError('content_for capturing for "'.$this->name.'" not started');
         }
 
         $content = ob_get_clean();
-        if ($this->capture_mode == self::SET)
-        {
+        if ($this->capture_mode == self::SET) {
             $this->set($content);
-        }
-        else
-        {
+        } else {
             $this->append($content);
         }
 
         self::$capture_lock = null;
     }
 }
-?>

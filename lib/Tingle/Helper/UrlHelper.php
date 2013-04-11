@@ -6,15 +6,16 @@ class UrlHelper
     /**
      * Create an HTML link tag.
      *
-     * @param string $label String to make hyperlinked
-     * @param string $url		Destination URL of link
-     * @param array	 $html_options Array of name/value pairs for additional tag attributes
+     * @param  string $label        String to make hyperlinked
+     * @param  string $url          Destination URL of link
+     * @param  array  $html_options Array of name/value pairs for additional tag attributes
      * @return string HTML link tag
      */
     public static function link_to($label, $url, $html_options = array())
     {
         $html_options['href'] = $url;
         $html_options = self::options_for_javascript($html_options);
+
         return TagHelper::content_tag('a', $label, $html_options);
     }
 
@@ -22,24 +23,23 @@ class UrlHelper
      * Create an HTML link tag only if the condition is met,
      * otherwise output only the label.
      *
-     * @param bool	 $condition Make a link if true
-     * @param string $label String to make hyperlinked
-     * @param string $url		Destination URL of link
-     * @param array	 $html_options Array of name/value pairs for additional tag attributes
+     * @param  bool   $condition    Make a link if true
+     * @param  string $label        String to make hyperlinked
+     * @param  string $url          Destination URL of link
+     * @param  array  $html_options Array of name/value pairs for additional tag attributes
      * @return string HTML link tag
      */
     public static function link_to_if($condition, $label, $url, $html_options = array())
     {
-        return (bool)$condition ? self::link_to($label, $url, $html_options) : $label;
+        return (bool) $condition ? self::link_to($label, $url, $html_options) : $label;
     }
-
 
     /**
      * Create an HTML link tag only if its label is not empty, otherwise output
      * only the label.	(Which will in effect output nothing.)
-     * @param string $label String to make hyperlinked
-     * @param string $url		Destination URL of link
-     * @param array	 $html_options Array of name/value pairs for additional tag attributes
+     * @param  string $label        String to make hyperlinked
+     * @param  string $url          Destination URL of link
+     * @param  array  $html_options Array of name/value pairs for additional tag attributes
      * @return string HTML link tag or nothing
      */
     public static function link_to_if_content($label, $url, $html_options = array())
@@ -47,22 +47,20 @@ class UrlHelper
         return self::link_to_if(trim(strval($label)) != '', $label, $url, $html_options);
     }
 
-
     /**
      * Create an HTML link tag only if the condition is not met,
      * otherwise output only the label.
      *
-     * @param bool	 $condition Make a link if true
-     * @param string $label String to make hyperlinked
-     * @param string $url		Destination URL of link
-     * @param array	 $html_options Array of name/value pairs for additional tag attributes
+     * @param  bool   $condition    Make a link if true
+     * @param  string $label        String to make hyperlinked
+     * @param  string $url          Destination URL of link
+     * @param  array  $html_options Array of name/value pairs for additional tag attributes
      * @return string HTML link tag
      */
     public static function link_to_unless($condition, $label, $url, $html_options = array())
     {
         return self::link_to_if(!$condition, $label, $url, $html_options);
     }
-
 
     /**
      * Create an HTML link to an e-mail address.
@@ -77,9 +75,9 @@ class UrlHelper
      *
      * Other options will be passed as HTML attributes on the link tag.
      *
-     * @param string $address E-mail address of recipient
-     * @param string $label String to show in link, defaults to e-mail address
-     * @param array	 $html_options Options for outputting link
+     * @param  string $address      E-mail address of recipient
+     * @param  string $label        String to show in link, defaults to e-mail address
+     * @param  array  $html_options Options for outputting link
      * @return string HTML mailto: link tag
      */
     public static function mail_to($address, $label = null, $html_options = array())
@@ -99,37 +97,29 @@ class UrlHelper
         $address = strval($address);
         $url_params = (count($url_params) == 0 ? '' : '?'.http_build_query($url_params));
 
-        if ($encode == 'hex')
-        {
+        if ($encode == 'hex') {
             $address_encoded = '';
-            for ($i=0; $i < strlen($address); $i++)
-            {
-                if (preg_match('/\w/', $address[$i]))
-                {
+            for ($i=0; $i < strlen($address); $i++) {
+                if (preg_match('/\w/', $address[$i])) {
                         $address_encoded .= '%'.bin2hex($address[$i]);
-                }
-                else
-                {
+                } else {
                         $address_encoded .= $address[$i];
                 }
             }
 
             $label = $label ? $label : $address;
             $label_encoded = '';
-            for ($i=0; $i < strlen($label); $i++)
-            {
+            for ($i=0; $i < strlen($label); $i++) {
                     $label_encoded .= '&#x'.bin2hex($label[$i]).';';
             }
 
             $mailto = "&#109;&#97;&#105;&#108;&#116;&#111;&#58;";
+
             return TagHelper::content_tag('a', $label_encoded, array_merge($html_options, array('href' => $mailto.$address_encoded.$url_params)));
-        }
-        else
-        {
+        } else {
             return TagHelper::content_tag('a', $label ? $label : $address, array_merge($html_options, array('href' => 'mailto:'.$address.$url_params)));
         }
     }
-
 
     /**
      * Convert special link options into appropriate Javascript event
@@ -142,7 +132,7 @@ class UrlHelper
      *	 method	 - Causes the link to POST a hidden form instead of making a normal
      *						 GET request
      *
-     * @param array $options Set of link options
+     * @param  array $options Set of link options
      * @return array Modified set of link options
      */
     private static function options_for_javascript($options)
@@ -153,40 +143,28 @@ class UrlHelper
         $href = isset($options['href']) ? $options['href'] : null;
         unset($options['confirm'], $options['method'], $options['popup']);
 
-        if ($popup && $method)
-        {
+        if ($popup && $method) {
             throw new RenderingError('Cannot use both popup and method options in a link');
-        }
-        elseif ($confirm && $method)
-        {
+        } elseif ($confirm && $method) {
             $options['onclick'] = "if (".self::javascript_function_for_confirm($confirm).") {".self::javascript_function_for_method($method, $href)."} return false;";
-        }
-        elseif ($confirm && $popup)
-        {
+        } elseif ($confirm && $popup) {
             $options['onclick'] = "if (".self::javascript_function_for_confirm($confirm).") {".self::javascript_function_for_popup($popup)."} return false;";
-        }
-        elseif ($confirm)
-        {
+        } elseif ($confirm) {
             $options['onclick'] = "return ".self::javascript_function_for_confirm($confirm).";";
-        }
-        elseif ($method)
-        {
+        } elseif ($method) {
             $options['onclick'] = self::javascript_function_for_method($method, $href).' return false;';
-        }
-        elseif ($popup)
-        {
+        } elseif ($popup) {
             $options['onclick'] = self::javascript_function_for_popup($popup).' return false;';
         }
 
         return $options;
     }
 
-
     /**
      * Generate the Javascript code to handle the "confirm"
      * link option.
      *
-     * @param string $confirm Text to show in dialog box
+     * @param  string $confirm Text to show in dialog box
      * @return string Javascript code
      */
     private static function javascript_function_for_confirm($confirm)
@@ -194,13 +172,12 @@ class UrlHelper
         return "confirm('".self::escape_for_javascript($confirm)."')";
     }
 
-
     /**
      * Generate the Javascript code to handle the "method"
      * link option.	 Creates a form and submits it via POST.
      *
      * @param string $method Value of method option (value doesn't matter)
-     * @param string $href	 Value of href attribute of link, to which
+     * @param string $href   Value of href attribute of link, to which
      *											 form will be submitted
      * @return string Javascript code
      */
@@ -219,7 +196,7 @@ class UrlHelper
     /**
      * Generate the Javascript code to open link in a new window.
      *
-     * @param mixed $popup Array of options to window.open, or just a string value that doesn't matter
+     * @param  mixed  $popup Array of options to window.open, or just a string value that doesn't matter
      * @return string Javascript code
      */
     private static function javascript_function_for_popup($popup)
@@ -227,12 +204,11 @@ class UrlHelper
         return is_array($popup) ? "window.open(this.href, '{$popup[0]}', '{$popup[1]}');" : "window.open(this.href);";
     }
 
-
     /**
      * Escape newlines, carriage returns, and quotes for use in a
      * JavaScript string.
      *
-     * @param string $string
+     * @param  string $string
      * @return string Escaped string
      */
     private static function escape_for_javascript($string)
@@ -243,4 +219,3 @@ class UrlHelper
         return $javascript;
     }
 }
-?>

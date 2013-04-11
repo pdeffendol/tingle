@@ -6,7 +6,7 @@ use Tingle\Cycle;
 
 class TextHelper
 {
-    static private $cycles = array();
+    private static $cycles = array();
 
     public static function pluralize($count, $singular, $number_format = null)
     {
@@ -18,9 +18,9 @@ class TextHelper
     /**
      * Truncate a string to a certain length, if necessary.
      *
-     * @param string $text Text to truncate
-     * @param integer $length Maximum length before truncating
-     * @param string $etc String to put at the end of truncated text
+     * @param string  $text        Text to truncate
+     * @param integer $length      Maximum length before truncating
+     * @param string  $etc         String to put at the end of truncated text
      * @param boolean $break_words Whether to break in the middle of a word
      * return string Truncated text
      */
@@ -29,18 +29,14 @@ class TextHelper
         // Shortcut for zero length
         if ($length == 0) return '';
 
-        if (strlen($text) > $length)
-        {
+        if (strlen($text) > $length) {
             $length -= min($length, strlen($etc));
-            if (!$break_words)
-            {
+            if (!$break_words) {
                 $text = preg_replace('/\s+?(\S+)?$/', '', substr($text, 0, $length+1));
             }
 
             return substr($text, 0, $length) . $etc;
-        }
-        else
-        {
+        } else {
             return $text;
         }
     }
@@ -52,19 +48,15 @@ class TextHelper
     {
         $values = func_get_args();
         $last = array_pop($values);
-        if (is_array($last))
-        {
+        if (is_array($last)) {
             $name = $last['name'];
-        }
-        else
-        {
+        } else {
             $name = 'default';
             array_push($values, $last);
         }
 
         $cycle = self::get_cycle($name);
-        if (!$cycle || $values != $cycle->values)
-        {
+        if (!$cycle || $values != $cycle->values) {
             $cycle = new Cycle($values);
             self::set_cycle($name, $cycle);
         }
@@ -75,6 +67,7 @@ class TextHelper
     public static function current_cycle($name = 'default')
     {
         $cycle = self::get_cycle($name);
+
         return $cycle ? $cycle->current_value() : null;
     }
 
@@ -94,4 +87,3 @@ class TextHelper
         return (isset(self::$cycles[$name]) ? self::$cycles[$name] : null);
     }
 }
-?>

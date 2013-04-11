@@ -17,8 +17,7 @@ class DateHelper
    */
     public static function format_date($date, $format = \DateTime::RFC822)
   {
-    if (!($date instanceof \DateTime))
-    {
+    if (!($date instanceof \DateTime)) {
       $date = new \DateTime($date);
     }
 
@@ -29,15 +28,14 @@ class DateHelper
      * Output an <abbr> tag as defined by the Datetime Design Pattern,
      * which is described at http://microformats.org/wiki/datetime-design-pattern
      *
-     * @param mixed $date Something that can be converted to a DateTime object
-     * @param string $viewable_format Format for visible date text
+     * @param  mixed  $date            Something that can be converted to a DateTime object
+     * @param  string $viewable_format Format for visible date text
      * @return string HTML tag
      */
     public static function datetime_tag($date, $viewable_format = \DateTime::RFC822, $html_attributes = array())
     {
         return TagHelper::content_tag('abbr',
             self::format_date($date, $viewable_format),
-            array_merge((array)$html_attributes, array('title' => self::format_date($date, \DateTime::ISO8601))));
+            array_merge((array) $html_attributes, array('title' => self::format_date($date, \DateTime::ISO8601))));
     }
 }
-?>

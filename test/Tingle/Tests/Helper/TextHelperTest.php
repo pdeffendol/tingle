@@ -97,4 +97,3 @@ class TextHelperTest extends BaseTest
         $this->assertNull(TextHelper::current_cycle('invalid'));
     }
 }
-?>

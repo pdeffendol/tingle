@@ -20,4 +20,3 @@ class JavascriptHelper
         return $javascript ? str_replace(array_keys(self::$escapes), array_values(self::$escapes), $javascript) : '';
     }
 }
-?>

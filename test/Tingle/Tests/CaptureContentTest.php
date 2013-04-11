@@ -118,4 +118,3 @@ class CaptureContentTest extends BaseTest
         $this->markTestIncomplete('Not sure how to test this');
     }
 }
-?>

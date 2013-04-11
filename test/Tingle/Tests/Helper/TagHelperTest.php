@@ -59,4 +59,3 @@ class TagHelperTest extends BaseTest
         $this->assertEquals('<div value="false" />', TagHelper::tag('div', array('value' => false)));
     }
 }
-?>

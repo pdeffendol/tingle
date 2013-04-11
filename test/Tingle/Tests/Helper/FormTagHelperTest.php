@@ -259,7 +259,6 @@ class FormTagHelperTest extends BaseTest
         $this->assertEquals("<option value=\"1\" selected=\"selected\">one</option>\n<option value=\"2\">two</option>\n", $actual, 'should mark selected values');
     }
 
-
     public function test_options_for_select_from_collection_with_objects()
     {
         $obj1 = new \StdClass;
@@ -278,4 +277,3 @@ class FormTagHelperTest extends BaseTest
         $this->assertEquals("<option value=\"1\" selected=\"selected\">one</option>\n<option value=\"2\">two</option>\n", $actual, 'should mark selected values');
     }
 }
-?>

@@ -117,4 +117,3 @@ class TemplateTest extends BaseTest
         $result = $this->tpl->render('partial.tpl');
     }
 }
-?>

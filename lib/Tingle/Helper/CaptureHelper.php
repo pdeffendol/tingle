@@ -25,17 +25,15 @@ class CaptureHelper
      * <div id="sidebar"><?php echo $this->content_for('sidebar'); ?></div>
      * </code>
      *
-     * @param string $name Name of content
+     * @param  string $name Name of content
      * @return object New or existing Helper_Capture_Content object
      */
     public static function content_for($name)
     {
-        if (!isset(self::$contents[$name]))
-        {
+        if (!isset(self::$contents[$name])) {
             self::$contents[$name] = new CaptureContent($name);
         }
 
         return self::$contents[$name];
     }
 }
-?>

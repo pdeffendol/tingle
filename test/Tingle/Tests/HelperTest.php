@@ -74,4 +74,3 @@ class HelperTest extends BaseTest
         $this->tpl->bogus_helper();
     }
 }
-?>

@@ -54,4 +54,3 @@ class AssignmentTest extends BaseTest
         $this->assertEquals(1, count($this->tpl->get_assignments()));
     }
 }
-?>

@@ -64,4 +64,3 @@ class DateHelperTest extends BaseTest
         $this->assertTag($matcher, $actual, 'title attribute specified');
     }
 }
-?>

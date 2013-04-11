@@ -20,11 +20,10 @@ class Cycle
      *
      * @param string $first_value First in a list of values to cycle
      */
-    function __construct()
+    public function __construct()
     {
         $values = func_get_args();
-        if (count($values) == 1 && is_array($values[0]))
-        {
+        if (count($values) == 1 && is_array($values[0])) {
             $values = $values[0];
         }
         $this->values = $values;
@@ -33,8 +32,7 @@ class Cycle
 
     public function __get($name)
     {
-        switch ($name)
-        {
+        switch ($name) {
             case 'values':
                 return $this->values;
                 break;
@@ -60,6 +58,7 @@ class Cycle
     {
         $value = $this->values[$this->index];
         $this->index = $this->next_index();
+
         return $value;
     }
 
@@ -78,4 +77,3 @@ class Cycle
         return ($this->index + $delta) % count($this->values);
     }
 }
-?>

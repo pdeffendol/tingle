@@ -26,4 +26,3 @@ class JavascriptHelperTest extends BaseTest
         $this->assertEquals("text <\/p> text", JavascriptHelper::escape_javascript("text </p> text"), 'forward slashes in closing HTML tags');
     }
 }
-?>

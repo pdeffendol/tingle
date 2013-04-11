@@ -32,4 +32,3 @@ class LayoutTest extends BaseTest
     $this->assertContains('Layout Test', $result);
     }
 }
-?>

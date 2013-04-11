@@ -25,8 +25,7 @@ class AssetTagHelper
         $urls = self::expand_asset_sources('stylesheet', $sources);
 
         $tags = array();
-        foreach ($urls as $url)
-        {
+        foreach ($urls as $url) {
             $tags[] = TagHelper::tag('link', array_merge(array('rel'=>'stylesheet', 'href'=>$url, 'type'=>'text/css'), $options));
         }
 
@@ -37,10 +36,10 @@ class AssetTagHelper
     {
         $urls = self::expand_asset_sources('javascript', $sources);
         $tags = array();
-        foreach ($urls as $url)
-        {
+        foreach ($urls as $url) {
             $tags[] = TagHelper::content_tag('script', '', array('src'=>$url, 'type'=>'text/javascript'));
         }
+
         return implode("\n", $tags);
     }
 
@@ -81,7 +80,7 @@ class AssetTagHelper
 
     private static function register_expansion($type, $name, $urls)
     {
-        self::$expansions[$type][$name] = (array)$urls;
+        self::$expansions[$type][$name] = (array) $urls;
     }
 
     private static function get_asset_path($type, $url)
@@ -93,24 +92,18 @@ class AssetTagHelper
     {
         $paths = array();
 
-        if (isset(self::$expansions[$type][$sources]))
-        {
+        if (isset(self::$expansions[$type][$sources])) {
             $sources = self::$expansions[$type][$sources];
         }
 
-        if (is_array($sources))
-        {
-            foreach ($sources as $u)
-            {
+        if (is_array($sources)) {
+            foreach ($sources as $u) {
                 $paths = array_merge($paths, self::expand_asset_sources($type, $u));
             }
-        }
-        else
-        {
+        } else {
             $paths[] = self::get_asset_path($type, $sources);
         }
 
         return $paths;
     }
 }
-?>

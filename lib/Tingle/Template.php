@@ -16,14 +16,12 @@ class Template
         'active_helpers' => array()
         );
 
-
     public function __construct($config = null)
     {
-        $this->_config = array_merge($this->_config, (array)$config);
+        $this->_config = array_merge($this->_config, (array) $config);
 
         $this->register_bundled_helpers();
     }
-
 
     /**
      * Register the helper classes that are bundled with Tingle.
@@ -32,12 +30,10 @@ class Template
     {
         $helpers = array('AssetTag', 'Capture', 'Date', 'Form', 'FormTag', 'Javascript', 'Tag', 'Text', 'Url');
 
-        foreach ($helpers as $helper)
-        {
+        foreach ($helpers as $helper) {
             $this->register_helper("Tingle\\Helper\\{$helper}Helper");
         }
     }
-
 
     /**
      * Register a helper class.
@@ -53,24 +49,20 @@ class Template
      */
     public function register_helper($name)
     {
-        if (!class_exists($name))
-        {
+        if (!class_exists($name)) {
             throw new InvalidHelperClass($name);
         }
 
         $helper_info = new \ReflectionClass($name);
 
-        foreach ($helper_info->getMethods() as $method)
-        {
-            if ($method->isPublic() && $method->isStatic())
-            {
+        foreach ($helper_info->getMethods() as $method) {
+            if ($method->isPublic() && $method->isStatic()) {
                 $this->_config['helpers'][$method->getName()] = $name;
             }
         }
 
         return true;
     }
-
 
     /**
      * Get a list of registered helper methods.
@@ -82,32 +74,28 @@ class Template
         return array_keys($this->_config['helpers']);
     }
 
-
     /**
      * Handle calls to helper methods by delegating to the appropriate
      * helper class.
      *
-     * @param string $helper Name of helper method
-     * @param array  $args   Arguments to helper method
+     * @param  string $helper Name of helper method
+     * @param  array  $args   Arguments to helper method
      * @return string Result of helper method
      */
     public function __call($helper, $args)
     {
         $helper_class = isset($this->_config['helpers'][$helper]) ? $this->_config['helpers'][$helper] : null;
 
-        if (!$helper_class)
-        {
+        if (!$helper_class) {
             throw new HelperMethodNotDefined($helper);
         }
 
-        if (!isset($this->_config['active_helpers'][$helper_class]))
-        {
+        if (!isset($this->_config['active_helpers'][$helper_class])) {
             $this->_config['active_helpers'][$helper_class] = new $helper_class($this);
         }
         $helper_class =& $this->_config['active_helpers'][$helper_class];
 
-        switch (count($args))
-        {
+        switch (count($args)) {
             case 0:
                 return $helper_class->$helper();
 
@@ -156,28 +144,25 @@ class Template
      */
     public function assign($name_or_container, $value = null)
     {
-        if (is_string($name_or_container))
-        {
+        if (is_string($name_or_container)) {
             // Don't allow overwriting of configuration settings
-            if ($name_or_container != '_config')
-            {
+            if ($name_or_container != '_config') {
                 $this->$name_or_container = $value;
+
                 return true;
             }
         }
 
-        if (is_array($name_or_container))
-        {
+        if (is_array($name_or_container)) {
             // Assign key/value pairs
-            foreach ($name_or_container as $key => $value)
-            {
+            foreach ($name_or_container as $key => $value) {
                 $this->assign($key, $value);
             }
+
             return true;
         }
 
-        if (is_object($name_or_container))
-        {
+        if (is_object($name_or_container)) {
             return $this->assign(get_object_vars($name_or_container));
         }
 
@@ -193,7 +178,7 @@ class Template
      */
     public function get_assignments()
     {
-        $all = (array)get_object_vars($this);
+        $all = (array) get_object_vars($this);
 
         // Because we called get_object_vars inside the class, it returns
         // protected and private attributes.
@@ -213,7 +198,7 @@ class Template
      */
     public function add_template_path($path)
     {
-        $this->_config['template_path'] = array_merge($this->_config['template_path'] , (array)$path);
+        $this->_config['template_path'] = array_merge($this->_config['template_path'] , (array) $path);
     }
 
     /**
@@ -253,7 +238,7 @@ class Template
      */
     public function set_extract_vars($flag = true)
     {
-        $this->_config['extract_vars'] = (bool)$flag;
+        $this->_config['extract_vars'] = (bool) $flag;
     }
 
     /**
@@ -292,13 +277,10 @@ class Template
      **/
     public function __toString()
     {
-        if ($this->_config['template'])
-        {
+        if ($this->_config['template']) {
             try {
                 return $this->render();
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 return '';
             }
         }
@@ -325,7 +307,7 @@ class Template
      * filename is not provided, then use the filename already provided by
      * ::set_template()
      *
-     * @param string $template Path to template file
+     * @param  string $template Path to template file
      * @return string Results of processing template
      */
     public function render($template = null)
@@ -334,13 +316,11 @@ class Template
         $result = $this->render_without_layout($template);
 
         // Render layout if necessary
-        if ($this->_config['layout'])
-        {
+        if ($this->_config['layout']) {
             $this->content_for('layout')->set($result);
+
             return $this->render_without_layout($this->_config['layout']);
-        }
-        else
-        {
+        } else {
             return $result;
         }
     }
@@ -365,19 +345,17 @@ class Template
      * filename is not provided, then use the filename already provided by
      * ::set_template()
      *
-     * @param string $template Path to template file
-     * @param array  $locals   Associative array of local variables to assign
+     * @param  string $template Path to template file
+     * @param  array  $locals   Associative array of local variables to assign
      * @return string Results of processing template
      */
     private function render_without_layout($template = null, $locals = array())
     {
-        if ($template === null)
-        {
+        if ($template === null) {
             $template = $this->_config['template'];
         }
 
-        if (false === ($template_path = $this->template($template)))
-        {
+        if (false === ($template_path = $this->template($template))) {
             throw new TemplateNotFound($template, $this->get_template_path());
         }
 
@@ -386,23 +364,19 @@ class Template
         unset($template);
         unset($template_path);
 
-        if ($this->_config['extract_vars'])
-        {
+        if ($this->_config['extract_vars']) {
             extract($this->get_assignments(), EXTR_REFS);
         }
-        extract((array)$locals, EXTR_OVERWRITE | EXTR_REFS);
+        extract((array) $locals, EXTR_OVERWRITE | EXTR_REFS);
         unset($locals);
 
         // Capture template output
-        try
-        {
+        try {
             ob_start();
             include($this->_config['saved_template_path']);
             $result = ob_get_contents();
             ob_end_clean();
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             // Clear the buffer so no output escapes (especially important
             // when dealing with nested templates)
             ob_end_clean();
@@ -429,10 +403,9 @@ class Template
      */
     public function template($template)
     {
-        $paths = (array)$this->_config['template_path'];
+        $paths = (array) $this->_config['template_path'];
 
-        foreach ($paths as $path)
-        {
+        foreach ($paths as $path) {
             $full_path = realpath($path.DIRECTORY_SEPARATOR.$template);
             $real_path = realpath($path);
 
@@ -450,4 +423,3 @@ class Template
         return false;
     }
 }
-?>

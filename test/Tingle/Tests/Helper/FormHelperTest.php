@@ -34,4 +34,3 @@ class FormHelperTest extends BaseTest
         $this->assertEquals($form, $form2);
     }
 }
-?>

@@ -12,4 +12,3 @@ class CaptureHelperTest extends BaseTest
         $this->assertTrue(CaptureHelper::content_for('capture') instanceof CaptureContent);
     }
 }
-?>

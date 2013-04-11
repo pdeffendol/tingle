@@ -34,20 +34,18 @@ class FormHelper
      * form, then just avoid calling the start() and end() methods for the inner call to
      * form_for.
      *
-     * @param string $model_name Name of model, used as prefix on form field names
-     * @param string $model_data Array or object holding model data for populating fields (optional)
-     * @param array  $options    Array of options for creating form or HTML attributes of <form> tag
+     * @param  string $model_name Name of model, used as prefix on form field names
+     * @param  string $model_data Array or object holding model data for populating fields (optional)
+     * @param  array  $options    Array of options for creating form or HTML attributes of <form> tag
      * @return object Instance of FormBuilder
      */
     public static function form_for($model_name, $model_data = array(), $html_attributes = array())
     {
-        if (!isset(self::$forms[$model_name]))
-        {
+        if (!isset(self::$forms[$model_name])) {
             $builder = isset($html_attributes['builder']) ? strval($html_attributes['builder']) : '\\Tingle\\FormBuilder';
             unset($html_attributes['builder']);
 
-            if (!class_exists($builder))
-            {
+            if (!class_exists($builder)) {
                 throw new RenderingError('Form builder '.$builder.' not found.');
             }
 
@@ -57,4 +55,3 @@ class FormHelper
         return self::$forms[$model_name];
     }
 }
-?>

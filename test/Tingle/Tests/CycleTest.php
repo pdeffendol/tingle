@@ -60,4 +60,3 @@ class CycleTest extends BaseTest
         $this->assertEquals('one', strval($cycle));
     }
 }
-?>

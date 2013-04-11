@@ -339,4 +339,3 @@ class FormBuilderTest extends BaseTest
         $this->assertTag($matcher, $actual, 'Should populate value from an object key');
     }
 }
-?>
