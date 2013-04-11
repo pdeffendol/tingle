@@ -4,168 +4,168 @@ namespace Tingle;
 /**
  * Static class for converting between word forms, esp. between
  * singular and plural.
- * 
+ *
  * Examples:
- * 
+ *
  * echo Inflector::singularize('methods');
  * "method"
- * 
+ *
  * echo Inflector::pluralize('sheep');
  * "sheep"
  */
 class Inflector
 {
-	private static $plural_rules = array();
-	private static $singular_rules = array();
-	private static $uncountables = array();
-	
-	/**
-	 * Add a new rule for singularizing a word.
-	 * 
-	 * New rules are added to the top of the list - thus are will be matched
-	 * before existing rules.
-	 * 
-	 * @param string $rule Regular expression to match
-	 * @param string $replacement Replacement text to make a word singular
-	 */
-	public static function singular($rule, $replacement)
-	{
-		self::$singular_rules = array_merge(array($rule => $replacement), self::$singular_rules);
-	}
-	
-	
-	/**
-	 * Add a new rule for pluralizing a word.
-	 * 
-	 * New rules are added to the top of the list - thus are will be matched
-	 * before existing rules.
-	 * 
-	 * @param string $rule Regular expression to match
-	 * @param string $replacement Replacement text to make a word plural
-	 */
-	public static function plural($rule, $replacement)
-	{
-		self::$plural_rules = array_merge(array($rule => $replacement), self::$plural_rules);
-	}
-	
-	
-	/**
-	 * Add a new rule for irregular words.
-	 * 
-	 * New rules are added to the top of the list - thus are will be matched
-	 * before existing rules.
-	 * 
-	 * @param string $singular Singular form of word
-	 * @param string $plural   Plural form of word
-	 */
-	public static function irregular($singular, $plural)
-	{
-		self::plural('/('.substr($singular, 0, 1).')'.substr($singular, 1).'$/i', '\1'.substr($plural, 1));
-		self::singular('/('.substr($plural, 0, 1).')'.substr($plural, 1).'$/i', '\1'.substr($singular, 1));
-	}
+    private static $plural_rules = array();
+    private static $singular_rules = array();
+    private static $uncountables = array();
 
-	
-	/**
-	 * Add a new rule for "uncountable" words - those that are the same whether
-	 * singular or plural.
-	 * 
-	 * @param string $word Uncountable word
-	 */
-	public static function uncountable($word)
-	{
-		self::$uncountables = array_merge(self::$uncountables, (array)$word);
-	}
-
-	
-	/**
-	 * Return the plural form of a word.
-	 * 
-	 * @param string $word Singular word
-	 * @return string Plural word
-	 */
-	public static function pluralize($word) 
-	{
-		if (in_array(strtolower($word), self::$uncountables))
-		{
-			return $word;
-		}
-		
-		$original = $word;
-		foreach(self::$plural_rules as $rule => $replacement)
-		{
-			$word = preg_replace($rule, $replacement, $word);
-			if ($original != $word) break;
-		}
-		return $word;
-	}
-
-	/**
-	 * Return the singular form of a word.
-	 * 
-	 * @param string $word Plural word
-	 * @return string Singular word
-	 */
-	public static function singularize($word)
-	{
-		if (in_array(strtolower($word), self::$uncountables))
-		{
-			return $word;
-		}
-		
-		$original = $word;
-		foreach(self::$singular_rules as $rule => $replacement)
-		{
-			$word = preg_replace($rule, $replacement, $word);
-			if ($original != $word) break;
-		}
-		return $word;
-	}
+    /**
+     * Add a new rule for singularizing a word.
+     *
+     * New rules are added to the top of the list - thus are will be matched
+     * before existing rules.
+     *
+     * @param string $rule Regular expression to match
+     * @param string $replacement Replacement text to make a word singular
+     */
+    public static function singular($rule, $replacement)
+    {
+        self::$singular_rules = array_merge(array($rule => $replacement), self::$singular_rules);
+    }
 
 
-	/**
-	 * Return the CamelCaseForm of a phrase.
-	 */
-	public static function camelize($lower_case_and_underscored_word) 
-	{
-		return str_replace(array(' ', "\t"), array('', '_'), ucwords(str_replace(array('_', '/'), array(' ', "\t"),$lower_case_and_underscored_word)));
-	}
+    /**
+     * Add a new rule for pluralizing a word.
+     *
+     * New rules are added to the top of the list - thus are will be matched
+     * before existing rules.
+     *
+     * @param string $rule Regular expression to match
+     * @param string $replacement Replacement text to make a word plural
+     */
+    public static function plural($rule, $replacement)
+    {
+        self::$plural_rules = array_merge(array($rule => $replacement), self::$plural_rules);
+    }
 
 
-	/**
-	 * Return the underscore_form of a phrase.
-	 */
-	public static function underscore($camel_cased_word) 
-	{
-		$camel_cased_word = preg_replace('/([A-Z]+)([A-Z])/','\1_\2',$camel_cased_word);
-		return strtolower(preg_replace('/([a-z])([A-Z])/','\1_\2',$camel_cased_word));
-	}
+    /**
+     * Add a new rule for irregular words.
+     *
+     * New rules are added to the top of the list - thus are will be matched
+     * before existing rules.
+     *
+     * @param string $singular Singular form of word
+     * @param string $plural   Plural form of word
+     */
+    public static function irregular($singular, $plural)
+    {
+        self::plural('/('.substr($singular, 0, 1).')'.substr($singular, 1).'$/i', '\1'.substr($plural, 1));
+        self::singular('/('.substr($plural, 0, 1).')'.substr($plural, 1).'$/i', '\1'.substr($singular, 1));
+    }
 
 
-	/**
-	 * Return the "Human readable form" of a phrase.
-	 */
-	public static function humanize($lower_case_and_underscored_word) 
-	{
-		return ucwords(str_replace("_"," ",$lower_case_and_underscored_word));
-	}
+    /**
+     * Add a new rule for "uncountable" words - those that are the same whether
+     * singular or plural.
+     *
+     * @param string $word Uncountable word
+     */
+    public static function uncountable($word)
+    {
+        self::$uncountables = array_merge(self::$uncountables, (array)$word);
+    }
 
 
-	public static function tableize($class_name) 
-	{
-		return self::pluralize(self::underscore($class_name));
-	}
+    /**
+     * Return the plural form of a word.
+     *
+     * @param string $word Singular word
+     * @return string Plural word
+     */
+    public static function pluralize($word)
+    {
+        if (in_array(strtolower($word), self::$uncountables))
+        {
+            return $word;
+        }
+
+        $original = $word;
+        foreach(self::$plural_rules as $rule => $replacement)
+        {
+            $word = preg_replace($rule, $replacement, $word);
+            if ($original != $word) break;
+        }
+        return $word;
+    }
+
+    /**
+     * Return the singular form of a word.
+     *
+     * @param string $word Plural word
+     * @return string Singular word
+     */
+    public static function singularize($word)
+    {
+        if (in_array(strtolower($word), self::$uncountables))
+        {
+            return $word;
+        }
+
+        $original = $word;
+        foreach(self::$singular_rules as $rule => $replacement)
+        {
+            $word = preg_replace($rule, $replacement, $word);
+            if ($original != $word) break;
+        }
+        return $word;
+    }
 
 
-	public static function classify($table_name)
-	{
-		return self::camelize(self::singularize($table_name));
-	}
+    /**
+     * Return the CamelCaseForm of a phrase.
+     */
+    public static function camelize($lower_case_and_underscored_word)
+    {
+        return str_replace(array(' ', "\t"), array('', '_'), ucwords(str_replace(array('_', '/'), array(' ', "\t"),$lower_case_and_underscored_word)));
+    }
 
 
-	public static function foreign_key($class_name) 
-	{
-		return self::underscore($class_name) . "_id";
-	}
+    /**
+     * Return the underscore_form of a phrase.
+     */
+    public static function underscore($camel_cased_word)
+    {
+        $camel_cased_word = preg_replace('/([A-Z]+)([A-Z])/','\1_\2',$camel_cased_word);
+        return strtolower(preg_replace('/([a-z])([A-Z])/','\1_\2',$camel_cased_word));
+    }
+
+
+    /**
+     * Return the "Human readable form" of a phrase.
+     */
+    public static function humanize($lower_case_and_underscored_word)
+    {
+        return ucwords(str_replace("_"," ",$lower_case_and_underscored_word));
+    }
+
+
+    public static function tableize($class_name)
+    {
+        return self::pluralize(self::underscore($class_name));
+    }
+
+
+    public static function classify($table_name)
+    {
+        return self::camelize(self::singularize($table_name));
+    }
+
+
+    public static function foreign_key($class_name)
+    {
+        return self::underscore($class_name) . "_id";
+    }
 }
 
 Inflector::singular('/s$/i' , '');
@@ -218,7 +218,7 @@ Inflector::irregular('child', 'children');
 Inflector::irregular('sex', 'sexes');
 Inflector::irregular('move', 'moves');
 
-Inflector::uncountable(array('equipment', 'information', 'rice', 
-                             'money', 'species', 'series', 'fish', 
+Inflector::uncountable(array('equipment', 'information', 'rice',
+                             'money', 'species', 'series', 'fish',
                              'sheep', 'deer', 'elk', 'cattle'));
 ?>
