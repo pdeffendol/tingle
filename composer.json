@@ -13,6 +13,13 @@
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "psr-0": { "Tingle": "lib/" }
+        "psr-4": { 
+            "Tingle\\": "lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": { 
+            "Tingle\\Tests\\": "test/"
+        }
     }
 }

@@ -11,4 +11,4 @@ EOT
     );
 }
 
-$loader->add('Tingle\Tests', __DIR__);
+$loader->addPsr4("Tingle\\Tests\\", __DIR__);
